@@ -2135,5 +2135,621 @@ and
 \]
 
 Thus the natural-number and signed-integer operations used above are obtained from the base set \(P_0\), deterministic adjunction and removal, evaluation of canonical finite sets, and reduction of ordered pairs.
+\section*{Non-Unique Signed-Pair Representations}
 
+The signed-pair construction admits infinitely many unreduced
+representations of the same signed integer.
+
+Let
+
+\[
+(P_a,P_b)
+\]
+
+be any signed-pair representation, and let
+
+\[
+P_v\in\mathcal P.
+\]
+
+Construct the shifted pair
+
+\[
+\left(
+S^{E(P_v)}(P_a),
+S^{E(P_v)}(P_b)
+\right).
+\]
+
+Since
+
+\[
+E(P_v)=v,
+\]
+
+and applying \(S\) exactly \(v\) times to a canonical set \(P_a\)
+produces \(P_{a+v}\), we have
+
+\[
+S^{E(P_v)}(P_a)=P_{a+v}
+\]
+
+and
+
+\[
+S^{E(P_v)}(P_b)=P_{b+v}.
+\]
+
+Hence the shifted pair may be written
+
+\[
+\boxed{
+\left(
+S^{E(P_v)}(P_a),
+S^{E(P_v)}(P_b)
+\right)
+=
+(P_{a+v},P_{b+v}).
+}
+\]
+
+\subsection*{Invariance Under Equal Shifting}
+
+\begin{theorem}
+For every \(P_a,P_b,P_v\in\mathcal P\),
+
+\[
+\boxed{
+R[(P_a,P_b)]
+=
+R[(P_{a+v},P_{b+v})].
+}
+\]
+
+Equivalently,
+
+\[
+\boxed{
+R[(P_a,P_b)]
+=
+R\left[
+\left(
+S^{E(P_v)}(P_a),
+S^{E(P_v)}(P_b)
+\right)
+\right].
+}
+\]
+\end{theorem}
+
+\begin{proof}
+
+The pair
+
+\[
+(P_{a+v},P_{b+v})
+\]
+
+contains the same additional contribution \(v\) in both components.
+
+By the definition of \(R\), whenever both components are nonempty,
+one application of \(N\) is made to each component simultaneously.
+
+Applying this simultaneous removal \(v\) times gives
+
+\[
+R[(P_{a+v},P_{b+v})]
+=
+R[(P_a,P_b)].
+\]
+
+Therefore adding the same canonical contribution to both components
+does not change the reduced signed integer represented by the pair.
+
+Hence
+
+\[
+\boxed{
+R[(P_{a+v},P_{b+v})]
+=
+R[(P_a,P_b)].
+}
+\]
+
+\end{proof}
+
+Thus a single signed integer does not have only one possible
+unreduced representation.
+
+For example,
+
+\[
+(P_a,P_b),
+\]
+
+\[
+(P_{a+1},P_{b+1}),
+\]
+
+\[
+(P_{a+2},P_{b+2}),
+\]
+
+and, more generally,
+
+\[
+(P_{a+v},P_{b+v})
+\]
+
+all reduce to the same signed integer.
+
+Because the canonical family
+
+\[
+\mathcal P
+=
+\{P_0,P_1,P_2,P_3,\ldots\}
+\]
+
+contains infinitely many canonical sets, there are infinitely many
+possible choices of \(P_v\), and therefore infinitely many unreduced
+representations of the same signed integer.
+
+
+\section*{Non-Unique Input Representations for Signed Addition}
+
+Consider
+
+\[
+\operatorname{Add}
+\left(
+(P_a,P_b),(P_c,P_d)
+\right).
+\]
+
+Let
+
+\[
+P_v,P_w\in\mathcal P.
+\]
+
+Independently shift the two input pairs by \(P_v\) and \(P_w\),
+respectively.
+
+The first pair becomes
+
+\[
+\left(
+S^{E(P_v)}(P_a),
+S^{E(P_v)}(P_b)
+\right),
+\]
+
+and the second becomes
+
+\[
+\left(
+S^{E(P_w)}(P_c),
+S^{E(P_w)}(P_d)
+\right).
+\]
+
+Therefore,
+
+\[
+\boxed{
+\begin{aligned}
+&
+\operatorname{Add}
+\left(
+(P_a,P_b),(P_c,P_d)
+\right)
+\\[4pt]
+&=
+\operatorname{Add}
+\left(
+\left(
+S^{E(P_v)}(P_a),
+S^{E(P_v)}(P_b)
+\right),
+\left(
+S^{E(P_w)}(P_c),
+S^{E(P_w)}(P_d)
+\right)
+\right).
+\end{aligned}
+}
+\]
+
+Using the canonical-set notation, this is equivalently
+
+\[
+\boxed{
+\operatorname{Add}
+\left(
+(P_a,P_b),(P_c,P_d)
+\right)
+=
+\operatorname{Add}
+\left(
+(P_{a+v},P_{b+v}),
+(P_{c+w},P_{d+w})
+\right).
+}
+\]
+
+\begin{theorem}
+For every
+
+\[
+P_a,P_b,P_c,P_d,P_v,P_w\in\mathcal P,
+\]
+
+the equality
+
+\[
+\boxed{
+\operatorname{Add}
+\left(
+(P_a,P_b),(P_c,P_d)
+\right)
+=
+\operatorname{Add}
+\left(
+(P_{a+v},P_{b+v}),
+(P_{c+w},P_{d+w})
+\right)
+}
+\]
+
+holds.
+\end{theorem}
+
+\begin{proof}
+
+By the preceding theorem,
+
+\[
+R[(P_{a+v},P_{b+v})]
+=
+R[(P_a,P_b)]
+\]
+
+and independently,
+
+\[
+R[(P_{c+w},P_{d+w})]
+=
+R[(P_c,P_d)].
+\]
+
+Thus each shifted pair represents exactly the same signed integer
+as its corresponding original pair.
+
+The definition of signed addition combines the positive components,
+combines the negative components, and then applies \(R\).
+
+Adding \(v\) to both components of the first pair contributes the
+same additional amount to the positive and negative sides.
+
+Likewise, adding \(w\) to both components of the second pair
+contributes the same additional amount to the positive and negative
+sides.
+
+These equal contributions cancel under \(R\).
+
+Therefore
+
+\[
+\operatorname{Add}
+\left(
+(P_{a+v},P_{b+v}),
+(P_{c+w},P_{d+w})
+\right)
+=
+\operatorname{Add}
+\left(
+(P_a,P_b),(P_c,P_d)
+\right).
+\]
+
+\end{proof}
+
+
+\subsection*{Infinitely Many Addition Representations}
+
+Since \(P_v\) and \(P_w\) may each be chosen independently from the
+infinite family
+
+\[
+\mathcal P,
+\]
+
+a single signed addition may be represented by infinitely many
+different input tuples.
+
+Thus
+
+\[
+\operatorname{Add}
+\left(
+(P_a,P_b),(P_c,P_d)
+\right)
+\]
+
+may equivalently be evaluated using
+
+\[
+\operatorname{Add}
+\left(
+(P_{a+v},P_{b+v}),
+(P_{c+w},P_{d+w})
+\right)
+\]
+
+for arbitrary
+
+\[
+v,w\in\mathbb N.
+\]
+
+For example, all of the following produce the same signed output:
+
+\[
+\operatorname{Add}
+\left(
+(P_a,P_b),(P_c,P_d)
+\right),
+\]
+
+\[
+\operatorname{Add}
+\left(
+(P_{a+1},P_{b+1}),
+(P_{c+1},P_{d+1})
+\right),
+\]
+
+\[
+\operatorname{Add}
+\left(
+(P_{a+5},P_{b+5}),
+(P_{c+9},P_{d+9})
+\right),
+\]
+
+and
+
+\[
+\operatorname{Add}
+\left(
+(P_{a+v},P_{b+v}),
+(P_{c+w},P_{d+w})
+\right)
+\]
+
+for arbitrary \(v\) and \(w\).
+
+Consequently, the mapping from such input representations to the
+reduced signed output is not injective.
+
+That is, if only the final reduced output
+
+\[
+P_{\mathrm{out}}
+=
+\operatorname{Add}
+\left(
+(P_{a+v},P_{b+v}),
+(P_{c+w},P_{d+w})
+\right)
+\]
+
+is known, the output alone does not uniquely determine the values of
+
+\[
+v
+\qquad\text{and}\qquad
+w.
+\]
+
+Nor does it uniquely determine the particular unreduced input pairs
+used in the computation.
+
+There are infinitely many distinct admissible input representations
+that may correspond to the same signed output.
+
+This is a many-to-one property of the representation system.
+
+It should not by itself be interpreted as a proof of computational
+hardness or as a statement concerning the complexity-theoretic
+question \(P\) versus \(NP\). Rather, it establishes that information
+about the particular input representation is lost when the inputs
+are reduced to a single signed result.
+
+
+\section*{Non-Unique Input Representations for Signed Subtraction}
+
+The same construction applies to signed subtraction.
+
+Recall that
+
+\[
+\operatorname{Subtract}
+\left(
+(P_a,P_b),(P_c,P_d)
+\right)
+\]
+
+is defined by adding the additive inverse of the second pair.
+
+Let
+
+\[
+P_v,P_w\in\mathcal P.
+\]
+
+Then
+
+\[
+(P_a,P_b)
+\]
+
+and
+
+\[
+(P_{a+v},P_{b+v})
+\]
+
+represent the same signed integer, while
+
+\[
+(P_c,P_d)
+\]
+
+and
+
+\[
+(P_{c+w},P_{d+w})
+\]
+
+also represent the same signed integer.
+
+Therefore,
+
+\[
+\boxed{
+\operatorname{Subtract}
+\left(
+(P_a,P_b),(P_c,P_d)
+\right)
+=
+\operatorname{Subtract}
+\left(
+(P_{a+v},P_{b+v}),
+(P_{c+w},P_{d+w})
+\right).
+}
+\]
+
+Equivalently,
+
+\[
+\boxed{
+\begin{aligned}
+&
+\operatorname{Subtract}
+\left(
+(P_a,P_b),(P_c,P_d)
+\right)
+\\[4pt]
+&=
+\operatorname{Subtract}
+\left(
+\left(
+S^{E(P_v)}(P_a),
+S^{E(P_v)}(P_b)
+\right),
+\left(
+S^{E(P_w)}(P_c),
+S^{E(P_w)}(P_d)
+\right)
+\right).
+\end{aligned}
+}
+\]
+
+Hence signed subtraction also admits infinitely many distinct
+unreduced input representations that produce the same reduced
+signed output.
+
+
+\section*{Input-to-Output Representation Expansion}
+
+A standard signed addition
+
+\[
+\operatorname{Add}
+\left(
+(P_a,P_b),(P_c,P_d)
+\right)
+\]
+
+requires four canonical input sets:
+
+\[
+P_a,\qquad P_b,\qquad P_c,\qquad P_d.
+\]
+
+Under the non-unique representation construction, two additional
+canonical sets may be chosen:
+
+\[
+P_v
+\qquad\text{and}\qquad
+P_w.
+\]
+
+These determine the independent shifts applied to the two signed
+input pairs.
+
+The complete representation may therefore depend upon the six
+canonical sets
+
+\[
+\boxed{
+P_a,\;
+P_b,\;
+P_c,\;
+P_d,\;
+P_v,\;
+P_w.
+}
+\]
+
+while the function ultimately returns a single signed-integer value,
+represented canonically by one reduced signed pair.
+
+Thus, when the output is regarded as one signed value, the
+construction has a
+
+\[
+\boxed{6:1}
+\]
+
+input-set-to-output-value relationship:
+
+\[
+\boxed{
+6\text{ canonical input sets}
+\longrightarrow
+1\text{ signed output value}.
+}
+\]
+
+The sets \(P_v\) and \(P_w\) are optional in the sense that choosing
+
+\[
+P_v=P_0
+\qquad\text{and}\qquad
+P_w=P_0
+\]
+
+returns the original unshifted representation.
+
+Therefore the ordinary signed operation is contained as the special
+case
+
+\[
+v=w=0.
+\]
+
+The additional sets \(P_v\) and \(P_w\) do not alter the resulting
+signed value. They alter only the particular unreduced
+representation used to obtain that value.
+
+This distinction between the represented value and the particular
+representation used to encode that value will be relevant when
+considering later applications involving concealed or randomized
+representations.
 \end{document}
