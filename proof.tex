@@ -1,7 +1,17 @@
 \documentclass[12pt]{article}
 
+% Consistency fixes incorporated in this revision:
+% 1. Structural induction is stated generically so it does not use \Sigma before \Sigma is defined.
+% 2. \Theta is not evaluated before the evaluation function is defined.
+% 3. Signed-pair + and - notation is explicitly tied to \Gamma and \Pi before later use.
+% 4. \Lambda remains pair-valued; signed symbols b and c are notation for its reduced outputs.
+% 5. The 6:1 statement is treated only as a parameter-count description, not as a preimage count.
+% 6. Euclidean division uses \Nu for repeated set removal because \Delta returns a symbol rather than a set.
+% 7. Negative-dividend quotient/remainder adjustment is chosen so b=q\cdot c+r and 0\le r<|c| always hold.
+
 \usepackage[margin=1in]{geometry}
 \usepackage{amsmath, amsfonts, amssymb}
+\usepackage{amsthm}
 \usepackage{enumitem}
 
 \setlength{\parindent}{0pt}
@@ -10,49 +20,58 @@
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}{Lemma}
 
+% Uppercase Alpha and Nu do not have separate standard LaTeX glyph commands.
+\newcommand{\Alpha}{\mathrm{A}}
+\newcommand{\Nu}{\mathrm{N}}
+
 \begin{document}
 
 \section*{Axiomatic System}
 
 \textbf{Axiom 1 (Infinite Adjunction).}
+
 Beginning with a base set \(P_0\), whenever a set \(P_n\) has been constructed, there exists a fixed distinguished element
+
 \[
-\alpha_{n+1}\notin P_n
+a_{n+1}\notin P_n
 \]
+
 which has not appeared at any preceding construction stage. Distinct stages use distinct elements. Hence the construction may continue indefinitely.
 
 At this point the subscripts
+
 \[
 0,1,2,\ldots
 \]
+
 serve only as construction-stage labels. Their arithmetic properties have not yet been assumed or defined.
 
 \textbf{Axiom 2 (Function Well-Definedness).}
-A function \(f:X\to Y\) maps every input \(x\in X\) to exactly one output \(f(x)\in Y\). We denote evaluation by
+
+A function \(f\:X\to Y\) maps every input \(x\in X\) to exactly one output \(f(x)\in Y\). We denote evaluation by
+
 \[
 f(x)\to y.
 \]
 
 \textbf{Axiom 3 (Structural Induction).}
-Let \(\mathcal P\) be a family generated from a base object \(P_0\) by repeated application of a function \(S\). If a property holds for \(P_0\), and whenever it holds for a constructed set \(P_n\) it also holds for \(S(P_n)\), then the property holds for every set generated from \(P_0\) by repeated applications of \(S\).
+
+Let \(\mathcal C\) be a family generated from a base object \(X_0\) by repeated application of a well-defined function \(f\). If a property holds for \(X_0\), and whenever it holds for a constructed object \(X_n\) it also holds for \(f(X_n)\), then the property holds for every object generated from \(X_0\) by repeated applications of \(f\).
 
 \section*{Definitions and Rules}
 
 \subsection*{1.1 Base Set}
 
 Let
+
 \[
 P_0=\varnothing.
 \]
 
 The empty set serves as the base representation of the symbol
+
 \[
 0.
-\]
-
-Thus
-\[
-E(P_0)=0.
 \]
 
 \subsection*{1.2 Canonical Finite Sets}
@@ -60,32 +79,41 @@ E(P_0)=0.
 Using Axiom 1, define the canonical sets recursively.
 
 Whenever \(P_n\) has already been constructed, define
+
 \[
-P_{n+1}=P_n\cup\{\alpha_{n+1}\},
+P_{n+1}=P_n\cup\{a_{n+1}\},
 \]
+
 where
+
 \[
-\alpha_{n+1}\notin P_n.
+a_{n+1}\notin P_n.
 \]
 
 Consequently,
+
 \[
 P_0=\varnothing,
 \]
+
 \[
-P_1=\{\alpha_1\},
+P_1=\{a_1\},
 \]
+
 \[
-P_2=\{\alpha_1,\alpha_2\},
+P_2=\{a_1,a_2\},
 \]
+
 \[
-P_3=\{\alpha_1,\alpha_2,\alpha_3\},
+P_3=\{a_1,a_2,a_3\},
 \]
+
 and so on.
 
 Let \(\mathcal P\) denote the smallest family containing \(P_0\) and closed under this construction.
 
 Thus
+
 \[
 \mathcal P=\{P_0,P_1,P_2,P_3,\ldots\}.
 \]
@@ -96,105 +124,126 @@ Because the element introduced at each stage is fixed, each construction stage h
 
 We now assign one output symbol to each construction stage.
 
-Define
+Define \(\Theta\) on the canonical family \(\mathcal P\) recursively by
+
 \[
-E:\mathcal P\to \{0,1,2,3,\ldots\}
+\Theta(P_0)=0,
 \]
-recursively by
-\[
-E(P_0)=0,
-\]
-and whenever \(P_{n+1}\) is the immediate successor of \(P_n\), let \(E(P_{n+1})\) be the next output symbol after \(E(P_n)\).
+
+and whenever \(P_{n+1}\) is the immediate successor of \(P_n\), let \(\Theta(P_{n+1})\) be the next output symbol after \(\Theta(P_n)\).
 
 Accordingly,
+
 \[
-E(P_0)=0,
+\Theta(P_0)=0,
 \]
+
 \[
-E(P_1)=1,
+\Theta(P_1)=1,
 \]
+
 \[
-E(P_2)=2,
+\Theta(P_2)=2,
 \]
+
 \[
-E(P_3)=3,
+\Theta(P_3)=3,
 \]
+
 and so on.
 
 Hence, after these symbols have been generated,
+
 \[
-E(P_n)=n.
+\Theta(P_n)=n.
 \]
 
-The statement \(E(P_n)=n\) therefore does not use a previously defined arithmetic operation. It associates the symbol generated at stage \(n\) with the canonical set generated at the same stage.
+The statement \(\Theta(P_n)=n\) therefore does not use a previously defined arithmetic operation. It associates the symbol generated at stage \(n\) with the canonical set generated at the same stage.
 
-Since each \(P_n\) contains exactly the elements introduced during the first \(n\) nonzero construction stages, \(E(P_n)\) is also the finite cardinality of \(P_n\). Therefore, once the symbols have been constructed, we may write
+Since each \(P_n\) contains exactly the elements introduced during the first \(n\) nonzero construction stages, \(\Theta(P_n)\) is also the finite cardinality of \(P_n\). Therefore, once the symbols have been constructed, we may write
+
 \[
-E(P_n)=|P_n|.
+\Theta(P_n)=|P_n|.
 \]
 
-The domain of \(E\) in this construction is \(\mathcal P\), so \(E\) is never required to assign a finite natural-number output to an arbitrary infinite set.
+The domain of \(\Theta\) in this construction is \(\mathcal P\), so \(\Theta\) is never required to assign a finite natural-number output to an arbitrary infinite set.
 
 \subsection*{1.4 Successor Function}
 
 Define
+
 \[
-S:\mathcal P\to\mathcal P
+\Sigma:\mathcal P\to\mathcal P
 \]
+
 by
+
 \[
-S(P_n)=P_n\cup\{\alpha_{n+1}\}=P_{n+1}.
+\Sigma(P_n)=P_n\cup\{a_{n+1}\}=P_{n+1}.
 \]
 
-Because \(\alpha_{n+1}\) is fixed at construction stage \(n+1\), \(S\) maps every canonical set to a unique canonical set and is therefore well-defined.
+Because \(a_{n+1}\) is fixed at construction stage \(n+1\), \(\Sigma\) maps every canonical set to a unique canonical set and is therefore well-defined.
 
-Applying \(S\) repeatedly gives
+Applying \(\Sigma\) repeatedly gives
+
 \[
 P_0=\varnothing,
 \]
+
 \[
-S(P_0)=P_1=\{\alpha_1\},
-\]
-\[
-S(S(P_0))=P_2=\{\alpha_1,\alpha_2\},
-\]
-\[
-S(S(S(P_0)))=P_3=\{\alpha_1,\alpha_2,\alpha_3\}.
+\Sigma(P_0)=P_1=\{a_1\},
 \]
 
-Evaluating with \(E\),
 \[
-E(P_0)=0,
-\]
-\[
-E(S(P_0))=1,
-\]
-\[
-E(S(S(P_0)))=2,
-\]
-\[
-E(S(S(S(P_0))))=3.
+\Sigma(\Sigma(P_0))=P_2=\{a_1,a_2\},
 \]
 
-For any already constructed natural-number symbol \(k\), write
 \[
-S^k(P)
+\Sigma(\Sigma(\Sigma(P_0)))=P_3=\{a_1,a_2,a_3\}.
 \]
-for \(k\) repeated applications of \(S\), with
+
+Evaluating with \(\Theta\),
+
 \[
-S^0(P)=P.
+\Theta(P_0)=0,
+\]
+
+\[
+\Theta(\Sigma(P_0))=1,
+\]
+
+\[
+\Theta(\Sigma(\Sigma(P_0)))=2,
+\]
+
+\[
+\Theta(\Sigma(\Sigma(\Sigma(P_0))))=3.
+\]
+
+For any already constructed nonnegative output symbol \(k\), write
+
+\[
+\Sigma^k(P)
+\]
+
+for \(k\) repeated applications of \(\Sigma\), with
+
+\[
+\Sigma^0(P)=P.
 \]
 
 \subsection*{1.5 Natural Numbers Definition}
 
-The natural numbers are defined to be exactly the output symbols produced by evaluating \(E\) on the canonical sets:
+The natural numbers are defined to be exactly the output symbols produced by evaluating \(\Theta\) on the canonical sets:
+
 \[
 \mathbb N
 =
-\{E(P)\mid P\in\mathcal P\}.
+\{\Theta(P)\mid P\in\mathcal P\}.
 \]
 
 Thus
+
 \[
 \boxed{
 \mathbb N=\{0,1,2,3,\ldots\}.
@@ -203,114 +252,138 @@ Thus
 
 This definition does not require a statement of the form \(k\in\mathbb N\) before \(\mathbb N\) itself has been constructed.
 
-\section*{Defining Addition}
+Now that \(\mathbb N\) has been constructed, the evaluation function may be written formally as
 
-We define addition using the canonical sets, the successor function \(S\), and the evaluation function \(E\).
-
-For \(P_1,P_2\in\mathcal P\), define
 \[
 \boxed{
-A(P_1,P_2)
-=
-E\left(S^{E(P_2)}(P_1)\right).
+\Theta:\mathcal P\to\mathbb N.
 }
 \]
 
-Thus \(A(P_1,P_2)\) is a natural-number symbol, not a set.
+\section*{Defining Addition}
 
-We define the ordinary notation \(+\) by
+We define addition using the canonical sets, the successor function \(\Sigma\), and the evaluation function \(\Theta\).
+
+For \(P_1,P_2\in\mathcal P\), define
+
 \[
 \boxed{
-E(P_1)+E(P_2)
+\Alpha(P_1,P_2)
+=
+\Theta\left(\Sigma^{\Theta(P_2)}(P_1)\right).
+}
+\]
+
+Thus \(\Alpha(P_1,P_2)\) is a natural-number symbol, not a set.
+
+We define the ordinary notation \(+\) by
+
+\[
+\boxed{
+\Theta(P_1)+\Theta(P_2)
 :=
-A(P_1,P_2).
+\Alpha(P_1,P_2).
 }
 \]
 
 Therefore,
+
 \[
-E(P_1)+E(P_2)
+\Theta(P_1)+\Theta(P_2)
 =
-E\left(S^{E(P_2)}(P_1)\right).
+\Theta\left(\Sigma^{\Theta(P_2)}(P_1)\right).
 \]
 
 \subsection*{Addition by Zero}
 
 Since
+
 \[
-E(P_0)=0,
+\Theta(P_0)=0,
 \]
+
 we have
+
 \[
-A(P_1,P_0)
+\Alpha(P_1,P_0)
 =
-E\left(S^{E(P_0)}(P_1)\right)
+\Theta\left(\Sigma^{\Theta(P_0)}(P_1)\right)
 =
-E(S^0(P_1))
+\Theta(\Sigma^0(P_1))
 =
-E(P_1).
+\Theta(P_1).
 \]
 
 Hence
+
 \[
 \boxed{
-E(P_1)+0=E(P_1).
+\Theta(P_1)+0=\Theta(P_1).
 }
 \]
 
 Also,
+
 \[
-A(P_0,P_1)
+\Alpha(P_0,P_1)
 =
-E\left(S^{E(P_1)}(P_0)\right).
+\Theta\left(\Sigma^{\Theta(P_1)}(P_0)\right).
 \]
 
-By construction, applying \(S\) to \(P_0\) exactly \(E(P_1)\) times produces \(P_1\). Therefore
+By construction, applying \(\Sigma\) to \(P_0\) exactly \(\Theta(P_1)\) times produces \(P_1\). Therefore
+
 \[
-A(P_0,P_1)=E(P_1),
+\Alpha(P_0,P_1)=\Theta(P_1),
 \]
+
 so
+
 \[
 \boxed{
-0+E(P_1)=E(P_1).
+0+\Theta(P_1)=\Theta(P_1).
 }
 \]
 
 \subsection*{Successor Compatibility}
 
 Suppose
+
 \[
-A(P_1,P_2)=E(P_r).
+\Alpha(P_1,P_2)=\Theta(P_r).
 \]
 
 Then
+
 \[
-S^{E(P_2)}(P_1)=P_r.
+\Sigma^{\Theta(P_2)}(P_1)=P_r.
 \]
 
-Since \(S(P_2)\) contains exactly one more constructed element than \(P_2\),
+Since \(\Sigma(P_2)\) contains exactly one more constructed element than \(P_2\),
+
 \[
-S^{E(S(P_2))}(P_1)
+\Sigma^{\Theta(\Sigma(P_2))}(P_1)
 =
-S\left(S^{E(P_2)}(P_1)\right).
+\Sigma\left(\Sigma^{\Theta(P_2)}(P_1)\right).
 \]
 
 Therefore
+
 \[
-A(P_1,S(P_2))
+\Alpha(P_1,\Sigma(P_2))
 =
-E\left(
-S\left(S^{E(P_2)}(P_1)\right)
+\Theta\left(
+\Sigma\left(\Sigma^{\Theta(P_2)}(P_1)\right)
 \right)
 =
-E(S(P_r)).
+\Theta(\Sigma(P_r)).
 \]
 
 Likewise,
+
 \[
-S^{E(P_1)}(S(P_2))
+\Sigma^{\Theta(P_1)}(\Sigma(P_2))
 =
-S\left(S^{E(P_1)}(P_2)\right).
+\Sigma\left(\Sigma^{\Theta(P_1)}(P_2)\right).
 \]
 
 Thus taking one successor step in either input produces one successor step in the resulting canonical set.
@@ -318,167 +391,207 @@ Thus taking one successor step in either input produces one successor step in th
 \subsection*{Commutativity of Addition}
 
 \begin{theorem}
+
 For all \(P_1,P_2\in\mathcal P\),
+
 \[
-A(P_1,P_2)=A(P_2,P_1).
+\Alpha(P_1,P_2)=\Alpha(P_2,P_1).
 \]
+
 Consequently,
+
 \[
-E(P_1)+E(P_2)=E(P_2)+E(P_1).
+\Theta(P_1)+\Theta(P_2)=\Theta(P_2)+\Theta(P_1).
 \]
+
 \end{theorem}
 
 \begin{proof}
+
 Fix \(P_1\). We use structural induction on \(P_2\).
 
 For the base case,
+
 \[
 P_2=P_0.
 \]
 
 Then
+
 \[
-A(P_1,P_0)=E(P_1).
+\Alpha(P_1,P_0)=\Theta(P_1).
 \]
 
 Also,
+
 \[
-A(P_0,P_1)
+\Alpha(P_0,P_1)
 =
-E\left(S^{E(P_1)}(P_0)\right)
+\Theta\left(\Sigma^{\Theta(P_1)}(P_0)\right)
 =
-E(P_1).
+\Theta(P_1).
 \]
 
 Hence
+
 \[
-A(P_1,P_0)=A(P_0,P_1).
+\Alpha(P_1,P_0)=\Alpha(P_0,P_1).
 \]
 
 Now assume
+
 \[
-A(P_1,P_2)=A(P_2,P_1).
+\Alpha(P_1,P_2)=\Alpha(P_2,P_1).
 \]
 
 Let
+
 \[
-P_2'=S(P_2).
+P_2'=\Sigma(P_2).
 \]
 
 By successor compatibility,
+
 \[
-A(P_1,P_2')
+\Alpha(P_1,P_2')
 \]
+
 is the output symbol immediately following
+
 \[
-A(P_1,P_2).
+\Alpha(P_1,P_2).
 \]
 
 Likewise,
+
 \[
-A(P_2',P_1)
+\Alpha(P_2',P_1)
 \]
+
 is the output symbol immediately following
+
 \[
-A(P_2,P_1).
+\Alpha(P_2,P_1).
 \]
 
 By the induction hypothesis,
+
 \[
-A(P_1,P_2)=A(P_2,P_1),
+\Alpha(P_1,P_2)=\Alpha(P_2,P_1),
 \]
+
 so their immediate successor symbols are equal. Therefore
+
 \[
-A(P_1,P_2')=A(P_2',P_1).
+\Alpha(P_1,P_2')=\Alpha(P_2',P_1).
 \]
 
 By structural induction,
+
 \[
-A(P_1,P_2)=A(P_2,P_1)
+\Alpha(P_1,P_2)=\Alpha(P_2,P_1)
 \]
+
 for every \(P_2\in\mathcal P\).
+
 \end{proof}
 
 Therefore it is valid to write
+
 \[
 \boxed{
-E(P_1)+E(P_2)
+\Theta(P_1)+\Theta(P_2)
 =
-E(P_2)+E(P_1).
+\Theta(P_2)+\Theta(P_1).
 }
 \]
 
 \subsection*{Example: \(1+2\)}
 
 Let
+
 \[
 P_0=\varnothing,
 \]
+
 \[
-P_1=S(P_0),
+P_1=\Sigma(P_0),
 \]
+
 \[
-P_2=S(S(P_0)).
+P_2=\Sigma(\Sigma(P_0)).
 \]
 
 Then
+
 \[
-E(P_1)=1,
+\Theta(P_1)=1,
 \qquad
-E(P_2)=2.
+\Theta(P_2)=2.
 \]
 
 Evaluate
+
 \[
-A(P_1,P_2)
+\Alpha(P_1,P_2)
 =
-E\left(S^{E(P_2)}(P_1)\right).
+\Theta\left(\Sigma^{\Theta(P_2)}(P_1)\right).
 \]
 
 Since
+
 \[
-E(P_2)=2,
+\Theta(P_2)=2,
 \]
+
 we obtain
+
 \[
-A(P_1,P_2)
+\Alpha(P_1,P_2)
 =
-E(S^2(P_1)).
+\Theta(\Sigma^2(P_1)).
 \]
 
 But
+
 \[
-S^2(P_1)
+\Sigma^2(P_1)
 =
-S(S(P_1))
+\Sigma(\Sigma(P_1))
 =
 P_3.
 \]
 
 Thus
+
 \[
-A(P_1,P_2)
+\Alpha(P_1,P_2)
 =
-E(P_3)
+\Theta(P_3)
 =
 3.
 \]
 
 Therefore
+
 \[
 1+2=3.
 \]
 
 By the commutativity theorem,
+
 \[
-A(P_2,P_1)=A(P_1,P_2)=3,
+\Alpha(P_2,P_1)=\Alpha(P_1,P_2)=3,
 \]
+
 so
+
 \[
 2+1=3.
 \]
 
 Hence
+
 \[
 \boxed{
 1+2=2+1=3.
@@ -491,71 +604,88 @@ We now define subtraction when the result remains nonnegative.
 
 \subsection*{1. Element Removal Function}
 
-Define the removal function \(N\) on every nonempty canonical set by
+Define the removal function \(\Nu\) on every nonempty canonical set by the predecessor rule
+
 \[
 \boxed{
-N(P_n)=P_{n-1}
-\qquad\text{for }P_n\neq P_0.
+\Nu(P_{n+1})=P_n.
 }
 \]
 
-Equivalently, \(N\) removes the distinguished element introduced most recently in the canonical construction.
+Here \(n+1\) denotes the immediate next construction-stage label already used in the canonical-set construction. No subtraction operation is being assumed in this definition. Equivalently, \(\Nu\) removes the distinguished element introduced most recently in the canonical construction.
 
 For example,
+
 \[
-P_3=\{\alpha_1,\alpha_2,\alpha_3\}.
+P_3=\{a_1,a_2,a_3\}.
 \]
 
 Then
+
 \[
-N(P_3)
+\Nu(P_3)
 =
-\{\alpha_1,\alpha_2\}
+\{a_1,a_2\}
 =
 P_2.
 \]
 
 Similarly,
+
 \[
-N(P_2)=P_1
+\Nu(P_2)=P_1
 \]
+
 and
+
 \[
-N(P_1)=P_0.
+\Nu(P_1)=P_0.
 \]
 
 In particular,
+
 \[
-N(P_1)=P_0=\varnothing,
-\]
-and therefore
-\[
-E(N(P_1))=0.
+\Nu(P_1)=P_0=\varnothing,
 \]
 
-The rule specifies a unique element to remove, so \(N\) is well-defined.
+and therefore
+
+\[
+\Theta(\Nu(P_1))=0.
+\]
+
+The rule specifies a unique element to remove, so \(\Nu\) is well-defined.
 
 \subsection*{2. Iterated Removal}
 
-For any natural-number symbol \(k\), define
+For any natural-number symbol \(k\), define the iteration recursively by
+
 \[
-N^0(P)=P,
+\boxed{
+\Nu^0(P)=P.
+}
 \]
-and, whenever the intermediate set is nonempty,
+
+Whenever \(\Nu^k(P)\) has already been constructed and is nonempty, define the next iteration by
+
 \[
-N^k(P)
+\boxed{
+\Nu^{k+1}(P)
 =
-N\left(N^{k-1}(P)\right)
+\Nu\left(\Nu^k(P)\right).
+}
 \]
-for nonzero \(k\).
+
+Thus iterated removal is defined using the already-constructed successor progression of natural-number symbols and does not assume subtraction.
 
 For example,
+
 \[
-N^2(P_3)
+\Nu^2(P_3)
 =
-N(N(P_3))
+\Nu(\Nu(P_3))
 =
-N(P_2)
+\Nu(P_2)
 =
 P_1.
 \]
@@ -565,121 +695,149 @@ P_1.
 Before restricting subtraction, define the order relation \(\leq\).
 
 For canonical sets \(P_1,P_2\), define
+
 \[
 \boxed{
-E(P_2)\leq E(P_1)
+\Theta(P_2)\leq \Theta(P_1)
 }
 \]
-to mean that \(P_1\) can be obtained from \(P_2\) by zero or more applications of \(S\).
+
+to mean that \(P_1\) can be obtained from \(P_2\) by zero or more applications of \(\Sigma\).
 
 Equivalently,
+
 \[
-E(P_2)\leq E(P_1)
+\Theta(P_2)\leq \Theta(P_1)
 \]
+
 when there exists a natural-number symbol \(k\) such that
+
 \[
-S^k(P_2)=P_1.
+\Sigma^k(P_2)=P_1.
 \]
 
 Thus, for example,
+
 \[
 1\leq3
 \]
+
 because
+
 \[
-S^2(P_1)=P_3.
+\Sigma^2(P_1)=P_3.
 \]
 
 \subsection*{4. Definition of Natural Subtraction}
 
 Let
+
 \[
-D(P_1,P_2)
+\Delta(P_1,P_2)
 \]
+
 be defined whenever
+
 \[
-E(P_2)\leq E(P_1).
+\Theta(P_2)\leq \Theta(P_1).
 \]
 
 Define
+
 \[
 \boxed{
-D(P_1,P_2)
+\Delta(P_1,P_2)
 =
-E\left(
-N^{E(P_2)}(P_1)
+\Theta\left(
+\Nu^{\Theta(P_2)}(P_1)
 \right).
 }
 \]
 
 We then define
+
 \[
 \boxed{
-E(P_1)-E(P_2)
+\Theta(P_1)-\Theta(P_2)
 :=
-D(P_1,P_2)
+\Delta(P_1,P_2)
 }
 \]
+
 whenever
+
 \[
-E(P_2)\leq E(P_1).
+\Theta(P_2)\leq \Theta(P_1).
 \]
 
-The restriction guarantees that \(N\) is never required to remove an element from \(P_0\).
+The restriction guarantees that \(\Nu\) is never required to remove an element from \(P_0\).
 
 \subsection*{5. Example Evaluation}
 
 Let
+
 \[
-P_3=\{\alpha_1,\alpha_2,\alpha_3\}
+P_3=\{a_1,a_2,a_3\}
 \]
+
 and
+
 \[
-P_1=\{\alpha_1\}.
+P_1=\{a_1\}.
 \]
 
 Then
+
 \[
-E(P_3)=3
+\Theta(P_3)=3
 \]
+
 and
+
 \[
-E(P_1)=1.
+\Theta(P_1)=1.
 \]
 
 Evaluate
+
 \[
-D(P_3,P_1)
+\Delta(P_3,P_1)
 =
-E\left(N^{E(P_1)}(P_3)\right).
+\Theta\left(\Nu^{\Theta(P_1)}(P_3)\right).
 \]
 
 Since
+
 \[
-E(P_1)=1,
-\]
-we have
-\[
-D(P_3,P_1)
-=
-E(N(P_3)).
+\Theta(P_1)=1,
 \]
 
-By the definition of \(N\),
+we have
+
 \[
-N(P_3)=P_2.
+\Delta(P_3,P_1)
+=
+\Theta(\Nu(P_3)).
+\]
+
+By the definition of \(\Nu\),
+
+\[
+\Nu(P_3)=P_2.
 \]
 
 Therefore
+
 \[
-D(P_3,P_1)
+\Delta(P_3,P_1)
 =
-E(P_2)
+\Theta(P_2)
 =
 2.
 \]
 
 Thus
+
 \[
 \boxed{
 3-1=2.
@@ -689,6 +847,7 @@ Thus
 \section*{Constructing Negative Numbers}
 
 Natural-number subtraction as defined above does not yet assign an output to expressions such as
+
 \[
 1-2.
 \]
@@ -698,10 +857,13 @@ We now construct signed integers using ordered pairs of canonical sets.
 \subsection*{1. Ordered-Pair Representation}
 
 Take an ordered pair
+
 \[
 (P_x,P_y),
 \]
+
 where
+
 \[
 P_x,P_y\in\mathcal P.
 \]
@@ -713,84 +875,101 @@ At this stage, however, the symbol ``negative'' describes the role of the second
 \subsection*{2. Reduction Function}
 
 Define
+
 \[
-R[(P_x,P_y)]
+\Lambda[(P_x,P_y)]
 \]
+
 recursively by
+
 \[
 \boxed{
-R[(P_x,P_y)]
+\Lambda[(P_x,P_y)]
 =
 \begin{cases}
-R[(N(P_x),N(P_y))],
+\Lambda[(\Nu(P_x),\Nu(P_y))],
 &
-E(P_x)>0\text{ and }E(P_y)>0,
+\Theta(P_x)>0\text{ and }\Theta(P_y)>0,
 \\[6pt]
 (P_x,P_y),
 &
-E(P_x)=0\text{ or }E(P_y)=0.
+\Theta(P_x)=0\text{ or }\Theta(P_y)=0.
 \end{cases}
 }
 \]
 
 Here
+
 \[
-E(P)>0
+\Theta(P)>0
 \]
+
 means simply
+
 \[
 P\neq P_0.
 \]
 
 Every recursive step removes one element from both components.
 
-Since \(P_x\) and \(P_y\) are finite canonical sets, after finitely many applications of \(N\), at least one component must become \(P_0\).
+Since \(P_x\) and \(P_y\) are finite canonical sets, after finitely many applications of \(\Nu\), at least one component must become \(P_0\).
 
-Therefore \(R\) always terminates.
+Therefore \(\Lambda\) always terminates.
 
 Most importantly,
+
 \[
-R
+\Lambda
 \]
+
 always returns an ordered pair. Its output type does not change during the definition.
 
 \subsection*{3. Reduced Signed Pairs}
 
 A pair
+
 \[
 (P_x,P_y)
 \]
+
 is called \emph{reduced} if at least one component equals \(P_0\).
 
 Thus every reduced pair has exactly one of the following forms:
+
 \[
 (P_n,P_0),
 \]
+
 \[
 (P_0,P_n),
 \]
+
 or
+
 \[
 (P_0,P_0).
 \]
 
-The function \(R\) maps every ordered pair of canonical sets to exactly one reduced pair.
+The function \(\Lambda\) maps every ordered pair of canonical sets to exactly one reduced pair.
 
 \subsection*{4. Signed Integer Notation}
 
 We now introduce notation for these already-constructed reduced pairs.
 
 For a nonzero natural-number symbol \(n\), define the notation
+
 \[
 (P_n,P_0)\equiv n.
 \]
 
 Define
+
 \[
 (P_0,P_0)\equiv0.
 \]
 
 Finally, for a nonzero natural-number symbol \(n\), introduce the new notation
+
 \[
 \boxed{
 (P_0,P_n)\equiv -n.
@@ -798,24 +977,29 @@ Finally, for a nonzero natural-number symbol \(n\), introduce the new notation
 \]
 
 Thus the symbol
+
 \[
 -n
 \]
+
 is not used to construct the negative integer.
 
 Instead, the ordered pair
+
 \[
 (P_0,P_n)
 \]
+
 is constructed first, and \(-n\) is then assigned as notation for that object.
 
 The signed integers are therefore the reduced pairs
+
 \[
 \boxed{
 \mathbb Z
 =
 \{
-R[(P_x,P_y)]
+\Lambda[(P_x,P_y)]
 \mid
 P_x,P_y\in\mathcal P
 \}.
@@ -823,6 +1007,7 @@ P_x,P_y\in\mathcal P
 \]
 
 Using the notation above, these objects are written
+
 \[
 \mathbb Z
 =
@@ -831,43 +1016,53 @@ Using the notation above, these objects are written
 
 \subsection*{5. Canonical Representation}
 
-Because \(R\) removes one element from each side simultaneously, every pair has a unique reduced representative.
+Because \(\Lambda\) removes one element from each side simultaneously, every pair has a unique reduced representative.
 
 For example,
+
 \[
-R[(P_2,P_1)]
+\Lambda[(P_2,P_1)]
 =
-R[(N(P_2),N(P_1))]
+\Lambda[(\Nu(P_2),\Nu(P_1))]
 =
-R[(P_1,P_0)]
+\Lambda[(P_1,P_0)]
 =
 (P_1,P_0).
 \]
 
 Thus
+
 \[
 (P_2,P_1)
 \]
+
 and
+
 \[
 (P_1,P_0)
 \]
+
 reduce to the same signed integer.
 
 More generally, two ordered pairs
+
 \[
 (P_a,P_b)
 \]
+
 and
+
 \[
 (P_c,P_d)
 \]
+
 represent the same signed integer precisely when
+
 \[
 \boxed{
-R[(P_a,P_b)]
+\Lambda[(P_a,P_b)]
 =
-R[(P_c,P_d)].
+\Lambda[(P_c,P_d)].
 }
 \]
 
@@ -878,54 +1073,67 @@ Hence signed integers have unique reduced representatives even though unreduced 
 \textbf{Example 1: \(1-2\).}
 
 Take
+
 \[
-P_1=\{\alpha_1\}
+P_1=\{a_1\}
 \]
+
 and
+
 \[
-P_2=\{\alpha_1,\alpha_2\}.
+P_2=\{a_1,a_2\}.
 \]
 
 Evaluate
+
 \[
-R[(P_1,P_2)].
+\Lambda[(P_1,P_2)].
 \]
 
 Since both components are nonempty,
+
 \[
-R[(P_1,P_2)]
+\Lambda[(P_1,P_2)]
 =
-R[(N(P_1),N(P_2))].
+\Lambda[(\Nu(P_1),\Nu(P_2))].
 \]
 
 Using
+
 \[
-N(P_1)=P_0
+\Nu(P_1)=P_0
 \]
+
 and
+
 \[
-N(P_2)=P_1,
+\Nu(P_2)=P_1,
 \]
+
 we obtain
+
 \[
-R[(P_1,P_2)]
+\Lambda[(P_1,P_2)]
 =
-R[(P_0,P_1)].
+\Lambda[(P_0,P_1)].
 \]
 
 Because the first component is now \(P_0\),
+
 \[
-R[(P_0,P_1)]
+\Lambda[(P_0,P_1)]
 =
 (P_0,P_1).
 \]
 
 By the signed notation introduced above,
+
 \[
 (P_0,P_1)\equiv-1.
 \]
 
 Therefore
+
 \[
 \boxed{
 1-2=-1.
@@ -935,32 +1143,37 @@ Therefore
 \textbf{Example 2: \(2-1\).}
 
 Evaluate
+
 \[
-R[(P_2,P_1)].
+\Lambda[(P_2,P_1)].
 \]
 
 Since both components are nonempty,
+
 \[
-R[(P_2,P_1)]
+\Lambda[(P_2,P_1)]
 =
-R[(N(P_2),N(P_1))].
+\Lambda[(\Nu(P_2),\Nu(P_1))].
 \]
 
 Thus
+
 \[
-R[(P_2,P_1)]
+\Lambda[(P_2,P_1)]
 =
-R[(P_1,P_0)]
+\Lambda[(P_1,P_0)]
 =
 (P_1,P_0).
 \]
 
 By signed notation,
+
 \[
 (P_1,P_0)\equiv1.
 \]
 
 Therefore
+
 \[
 \boxed{
 2-1=1.
@@ -970,40 +1183,47 @@ Therefore
 \textbf{Example 3: \(2-2\).}
 
 Evaluate
+
 \[
-R[(P_2,P_2)].
+\Lambda[(P_2,P_2)].
 \]
 
 First,
+
 \[
-R[(P_2,P_2)]
+\Lambda[(P_2,P_2)]
 =
-R[(N(P_2),N(P_2))]
+\Lambda[(\Nu(P_2),\Nu(P_2))]
 =
-R[(P_1,P_1)].
+\Lambda[(P_1,P_1)].
 \]
 
 Both components remain nonempty, so
+
 \[
-R[(P_1,P_1)]
+\Lambda[(P_1,P_1)]
 =
-R[(N(P_1),N(P_1))]
+\Lambda[(\Nu(P_1),\Nu(P_1))]
 =
-R[(P_0,P_0)].
+\Lambda[(P_0,P_0)].
 \]
 
 The pair is now reduced, giving
+
 \[
-R[(P_0,P_0)]
+\Lambda[(P_0,P_0)]
 =
 (P_0,P_0).
 \]
 
 Since
+
 \[
 (P_0,P_0)\equiv0,
 \]
+
 we obtain
+
 \[
 \boxed{
 2-2=0.
@@ -1012,25 +1232,32 @@ we obtain
 
 \section*{Addition and Subtraction of Signed Pairs}
 
-We now define arithmetic directly on reduced signed-pair representations.
+We now define arithmetic on signed-pair representations. The inputs may be reduced or unreduced; the final application of \(\Lambda\) produces the unique reduced representative.
 
 Let
+
 \[
 (P_a,P_b)
 \]
+
 and
+
 \[
 (P_c,P_d)
 \]
+
 be signed-pair representations.
 
 The positive contributions are represented by
+
 \[
 P_a
 \quad\text{and}\quad
 P_c,
 \]
+
 while the negative contributions are represented by
+
 \[
 P_b
 \quad\text{and}\quad
@@ -1040,50 +1267,67 @@ P_d.
 \subsection*{Signed Addition}
 
 The combined positive count is
+
 \[
-A(P_a,P_c).
+\Alpha(P_a,P_c).
 \]
 
 The corresponding canonical set is
+
 \[
-S^{A(P_a,P_c)}(P_0).
+\Sigma^{\Alpha(P_a,P_c)}(P_0).
 \]
 
 Likewise, the combined negative count is
+
 \[
-A(P_b,P_d),
+\Alpha(P_b,P_d),
 \]
+
 with corresponding canonical set
+
 \[
-S^{A(P_b,P_d)}(P_0).
+\Sigma^{\Alpha(P_b,P_d)}(P_0).
 \]
 
 Therefore define
+
 \[
 \boxed{
-\operatorname{Add}
+\Gamma
 \left(
 (P_a,P_b),(P_c,P_d)
 \right)
 =
-R\left[
+\Lambda\left[
 \left(
-S^{A(P_a,P_c)}(P_0),
-S^{A(P_b,P_d)}(P_0)
+\Sigma^{\Alpha(P_a,P_c)}(P_0),
+\Sigma^{\Alpha(P_b,P_d)}(P_0)
 \right)
 \right].
 }
 \]
 
-The result is a reduced signed pair.
+The result is a reduced signed pair. We therefore define ordinary addition notation for signed-pair representations by
+
+\[
+\boxed{
+(P_a,P_b)+(P_c,P_d)
+:=
+\Gamma\left((P_a,P_b),(P_c,P_d)\right).
+}
+\]
 
 \subsection*{Signed Additive Inverse}
 
 For a signed pair
+
 \[
 (P_c,P_d),
 \]
+
 define its additive inverse by exchanging its two components:
+
 \[
 \boxed{
 -(P_c,P_d):=(P_d,P_c).
@@ -1093,22 +1337,27 @@ define its additive inverse by exchanging its two components:
 This is valid because the component that formerly contributed positively now contributes negatively, and the component that formerly contributed negatively now contributes positively.
 
 For example,
+
 \[
 -(P_2,P_0)
 =
 (P_0,P_2),
 \]
+
 so the additive inverse of \(2\) is represented by
+
 \[
 (P_0,P_2)\equiv-2.
 \]
 
 Similarly,
+
 \[
 -(P_0,P_2)
 =
 (P_2,P_0),
 \]
+
 so the additive inverse of \(-2\) is \(2\).
 
 \subsection*{Signed Subtraction}
@@ -1116,93 +1365,118 @@ so the additive inverse of \(-2\) is \(2\).
 Subtraction is addition of the additive inverse.
 
 Thus
+
 \[
 (P_a,P_b)-(P_c,P_d)
 \]
+
 is defined as
+
 \[
 (P_a,P_b)+(P_d,P_c).
 \]
 
 Therefore
+
 \[
 \boxed{
-\operatorname{Subtract}
+\Pi
 \left(
 (P_a,P_b),(P_c,P_d)
 \right)
 =
-R\left[
+\Lambda\left[
 \left(
-S^{A(P_a,P_d)}(P_0),
-S^{A(P_b,P_c)}(P_0)
+\Sigma^{\Alpha(P_a,P_d)}(P_0),
+\Sigma^{\Alpha(P_b,P_c)}(P_0)
 \right)
 \right].
+}
+\]
+
+We therefore define ordinary subtraction notation for signed-pair representations by
+
+\[
+\boxed{
+(P_a,P_b)-(P_c,P_d)
+:=
+\Pi\left((P_a,P_b),(P_c,P_d)\right).
 }
 \]
 
 \subsection*{1. Adding Same Signs: \((-2)+(-1)\)}
 
 The inputs are
+
 \[
 (P_0,P_2)
 \]
+
 and
+
 \[
 (P_0,P_1).
 \]
 
 The new positive count is
+
 \[
-A(P_0,P_0)=0.
+\Alpha(P_0,P_0)=0.
 \]
 
 Therefore
+
 \[
 P_{\mathrm{pos}}
 =
-S^0(P_0)
+\Sigma^0(P_0)
 =
 P_0.
 \]
 
 The new negative count is
+
 \[
-A(P_2,P_1)=3.
+\Alpha(P_2,P_1)=3.
 \]
 
 Therefore
+
 \[
 P_{\mathrm{neg}}
 =
-S^3(P_0)
+\Sigma^3(P_0)
 =
 P_3.
 \]
 
 Hence
+
 \[
-\operatorname{Add}
+\Gamma
 \left(
 (P_0,P_2),(P_0,P_1)
 \right)
 =
-R[(P_0,P_3)].
+\Lambda[(P_0,P_3)].
 \]
 
 Since the first component is already \(P_0\),
+
 \[
-R[(P_0,P_3)]
+\Lambda[(P_0,P_3)]
 =
 (P_0,P_3).
 \]
 
 By signed notation,
+
 \[
 (P_0,P_3)\equiv-3.
 \]
 
 Therefore
+
 \[
 \boxed{
 (-2)+(-1)=-3.
@@ -1212,56 +1486,70 @@ Therefore
 \subsection*{2. Adding Opposite Signs: \((-2)+1\)}
 
 The inputs are
+
 \[
 (P_0,P_2)
 \]
+
 and
+
 \[
 (P_1,P_0).
 \]
 
 The new positive count is
+
 \[
-A(P_0,P_1)=1,
+\Alpha(P_0,P_1)=1,
 \]
+
 so
+
 \[
 P_{\mathrm{pos}}=P_1.
 \]
 
 The new negative count is
+
 \[
-A(P_2,P_0)=2,
+\Alpha(P_2,P_0)=2,
 \]
+
 so
+
 \[
 P_{\mathrm{neg}}=P_2.
 \]
 
 Thus
+
 \[
-\operatorname{Add}
+\Gamma
 \left(
 (P_0,P_2),(P_1,P_0)
 \right)
 =
-R[(P_1,P_2)].
+\Lambda[(P_1,P_2)].
 \]
 
-Applying \(N\) once to both components gives
+Applying \(\Nu\) once to both components gives
+
 \[
-R[(P_1,P_2)]
+\Lambda[(P_1,P_2)]
 =
-R[(P_0,P_1)]
+\Lambda[(P_0,P_1)]
 =
 (P_0,P_1).
 \]
 
 Since
+
 \[
 (P_0,P_1)\equiv-1,
 \]
+
 we obtain
+
 \[
 \boxed{
 (-2)+1=-1.
@@ -1271,56 +1559,70 @@ we obtain
 \subsection*{3. Subtracting Same Signs: \(1-2\)}
 
 The inputs are
+
 \[
 (P_1,P_0)
 \]
+
 and
+
 \[
 (P_2,P_0).
 \]
 
 Using the subtraction definition,
+
 \[
-A(P_1,P_0)=1,
+\Alpha(P_1,P_0)=1,
 \]
+
 so
+
 \[
 P_{\mathrm{pos}}=P_1.
 \]
 
 Also,
+
 \[
-A(P_0,P_2)=2,
+\Alpha(P_0,P_2)=2,
 \]
+
 so
+
 \[
 P_{\mathrm{neg}}=P_2.
 \]
 
 Thus
+
 \[
-\operatorname{Subtract}
+\Pi
 \left(
 (P_1,P_0),(P_2,P_0)
 \right)
 =
-R[(P_1,P_2)].
+\Lambda[(P_1,P_2)].
 \]
 
 Reduction gives
+
 \[
-R[(P_1,P_2)]
+\Lambda[(P_1,P_2)]
 =
-R[(P_0,P_1)]
+\Lambda[(P_0,P_1)]
 =
 (P_0,P_1).
 \]
 
 Since
+
 \[
 (P_0,P_1)\equiv-1,
 \]
+
 we obtain
+
 \[
 \boxed{
 1-2=-1.
@@ -1330,55 +1632,68 @@ we obtain
 \subsection*{4. Subtracting Opposite Signs: \(1-(-2)\)}
 
 The inputs are
+
 \[
 (P_1,P_0)
 \]
+
 and
+
 \[
 (P_0,P_2).
 \]
 
 The positive count is
+
 \[
-A(P_1,P_2)=3,
+\Alpha(P_1,P_2)=3,
 \]
+
 so
+
 \[
 P_{\mathrm{pos}}=P_3.
 \]
 
 The negative count is
+
 \[
-A(P_0,P_0)=0,
+\Alpha(P_0,P_0)=0,
 \]
+
 so
+
 \[
 P_{\mathrm{neg}}=P_0.
 \]
 
 Therefore
+
 \[
-\operatorname{Subtract}
+\Pi
 \left(
 (P_1,P_0),(P_0,P_2)
 \right)
 =
-R[(P_3,P_0)].
+\Lambda[(P_3,P_0)].
 \]
 
 Since the second component is already \(P_0\),
+
 \[
-R[(P_3,P_0)]
+\Lambda[(P_3,P_0)]
 =
 (P_3,P_0).
 \]
 
 By signed notation,
+
 \[
 (P_3,P_0)\equiv3.
 \]
 
 Hence
+
 \[
 \boxed{
 1-(-2)=3.
@@ -1388,153 +1703,178 @@ Hence
 \section*{Proof by Fully Expanded Substitution}
 
 We now expand the preceding signed arithmetic computations back to the base set \(P_0\) using only
+
 \[
-S(P),\qquad
-E(P),\qquad
-A(P_1,P_2),\qquad
-N(P),\qquad
-R[(P_x,P_y)].
+\Sigma(P),\qquad
+\Theta(P),\qquad
+\Alpha(P_1,P_2),\qquad
+\Nu(P),\qquad
+\Lambda[(P_x,P_y)].
 \]
 
 \subsection*{1. Adding Same Signs: \((-2)+(-1)=-3\)}
 
 The base representations are
+
 \[
 \text{Pair 1}
 =
-(P_0,S(S(P_0)))
+(P_0,\Sigma(\Sigma(P_0)))
 \]
+
 and
+
 \[
 \text{Pair 2}
 =
-(P_0,S(P_0)).
+(P_0,\Sigma(P_0)).
 \]
 
 The expanded addition formula is
+
 \[
-\operatorname{Add}
+\Gamma
 =
-R\left[
+\Lambda\left[
 \left(
-S^{A(P_0,P_0)}(P_0),
-S^{A(S(S(P_0)),S(P_0))}(P_0)
+\Sigma^{\Alpha(P_0,P_0)}(P_0),
+\Sigma^{\Alpha(\Sigma(\Sigma(P_0)),\Sigma(P_0))}(P_0)
 \right)
 \right].
 \]
 
 First evaluate the positive component:
+
 \[
-A(P_0,P_0)
+\Alpha(P_0,P_0)
 =
-E\left(
-S^{E(P_0)}(P_0)
+\Theta\left(
+\Sigma^{\Theta(P_0)}(P_0)
 \right).
 \]
 
 Since
+
 \[
-E(P_0)=0,
+\Theta(P_0)=0,
 \]
+
 we obtain
+
 \[
-A(P_0,P_0)
+\Alpha(P_0,P_0)
 =
-E(S^0(P_0))
+\Theta(\Sigma^0(P_0))
 =
-E(P_0)
+\Theta(P_0)
 =
 0.
 \]
 
 Thus
+
 \[
 k_{\mathrm{pos}}=0.
 \]
 
 Now evaluate the negative component:
+
 \[
-A(S(S(P_0)),S(P_0))
+\Alpha(\Sigma(\Sigma(P_0)),\Sigma(P_0))
 =
-E\left(
-S^{E(S(P_0))}(S(S(P_0)))
+\Theta\left(
+\Sigma^{\Theta(\Sigma(P_0))}(\Sigma(\Sigma(P_0)))
 \right).
 \]
 
 Since
+
 \[
-E(S(P_0))=1,
+\Theta(\Sigma(P_0))=1,
 \]
+
 we obtain
+
 \[
-A(S(S(P_0)),S(P_0))
+\Alpha(\Sigma(\Sigma(P_0)),\Sigma(P_0))
 =
-E\left(
-S^1(S(S(P_0)))
+\Theta\left(
+\Sigma^1(\Sigma(\Sigma(P_0)))
 \right).
 \]
 
 Therefore
+
 \[
-A(S(S(P_0)),S(P_0))
+\Alpha(\Sigma(\Sigma(P_0)),\Sigma(P_0))
 =
-E(S(S(S(P_0))))
+\Theta(\Sigma(\Sigma(\Sigma(P_0))))
 =
 3.
 \]
 
 Thus
+
 \[
 k_{\mathrm{neg}}=3.
 \]
 
 Construct the new sets:
+
 \[
 P_x
 =
-S^0(P_0)
+\Sigma^0(P_0)
 =
 P_0,
 \]
+
 and
+
 \[
 P_y
 =
-S^3(P_0)
+\Sigma^3(P_0)
 =
-S(S(S(P_0))).
+\Sigma(\Sigma(\Sigma(P_0))).
 \]
 
 Therefore
+
 \[
-\operatorname{Add}
+\Gamma
 =
-R[(P_0,S(S(S(P_0))))].
+\Lambda[(P_0,\Sigma(\Sigma(\Sigma(P_0))))].
 \]
 
 Since the first component is \(P_0\), reduction stops immediately:
+
 \[
-R[(P_0,S(S(S(P_0))))]
+\Lambda[(P_0,\Sigma(\Sigma(\Sigma(P_0))))]
 =
-(P_0,S(S(S(P_0)))).
+(P_0,\Sigma(\Sigma(\Sigma(P_0)))).
 \]
 
 But
+
 \[
-S(S(S(P_0)))=P_3.
+\Sigma(\Sigma(\Sigma(P_0)))=P_3.
 \]
 
 Hence the reduced pair is
+
 \[
 (P_0,P_3).
 \]
 
 By signed notation,
+
 \[
 (P_0,P_3)\equiv-3.
 \]
 
 Therefore
+
 \[
 \boxed{
 (-2)+(-1)=-3.
@@ -1544,157 +1884,186 @@ Therefore
 \subsection*{2. Adding Opposite Signs: \((-2)+1=-1\)}
 
 The base representations are
+
 \[
 \text{Pair 1}
 =
-(P_0,S(S(P_0)))
+(P_0,\Sigma(\Sigma(P_0)))
 \]
+
 and
+
 \[
 \text{Pair 2}
 =
-(S(P_0),P_0).
+(\Sigma(P_0),P_0).
 \]
 
 The expanded addition formula is
+
 \[
-\operatorname{Add}
+\Gamma
 =
-R\left[
+\Lambda\left[
 \left(
-S^{A(P_0,S(P_0))}(P_0),
-S^{A(S(S(P_0)),P_0)}(P_0)
+\Sigma^{\Alpha(P_0,\Sigma(P_0))}(P_0),
+\Sigma^{\Alpha(\Sigma(\Sigma(P_0)),P_0)}(P_0)
 \right)
 \right].
 \]
 
 Evaluate the positive component:
+
 \[
-A(P_0,S(P_0))
+\Alpha(P_0,\Sigma(P_0))
 =
-E\left(
-S^{E(S(P_0))}(P_0)
+\Theta\left(
+\Sigma^{\Theta(\Sigma(P_0))}(P_0)
 \right).
 \]
 
 Since
+
 \[
-E(S(P_0))=1,
+\Theta(\Sigma(P_0))=1,
 \]
+
 we have
+
 \[
-A(P_0,S(P_0))
+\Alpha(P_0,\Sigma(P_0))
 =
-E(S^1(P_0))
+\Theta(\Sigma^1(P_0))
 =
-E(S(P_0))
+\Theta(\Sigma(P_0))
 =
 1.
 \]
 
 Thus
+
 \[
 k_{\mathrm{pos}}=1.
 \]
 
 Now evaluate the negative component:
+
 \[
-A(S(S(P_0)),P_0)
+\Alpha(\Sigma(\Sigma(P_0)),P_0)
 =
-E\left(
-S^{E(P_0)}(S(S(P_0)))
+\Theta\left(
+\Sigma^{\Theta(P_0)}(\Sigma(\Sigma(P_0)))
 \right).
 \]
 
 Since
+
 \[
-E(P_0)=0,
+\Theta(P_0)=0,
 \]
+
 we obtain
+
 \[
-A(S(S(P_0)),P_0)
+\Alpha(\Sigma(\Sigma(P_0)),P_0)
 =
-E(S^0(S(S(P_0))))
+\Theta(\Sigma^0(\Sigma(\Sigma(P_0))))
 =
-E(S(S(P_0)))
+\Theta(\Sigma(\Sigma(P_0)))
 =
 2.
 \]
 
 Thus
+
 \[
 k_{\mathrm{neg}}=2.
 \]
 
 Construct the sets:
+
 \[
 P_x
 =
-S^1(P_0)
+\Sigma^1(P_0)
 =
-S(P_0),
+\Sigma(P_0),
 \]
+
 and
+
 \[
 P_y
 =
-S^2(P_0)
+\Sigma^2(P_0)
 =
-S(S(P_0)).
+\Sigma(\Sigma(P_0)).
 \]
 
 Therefore
+
 \[
-\operatorname{Add}
+\Gamma
 =
-R[(S(P_0),S(S(P_0)))].
+\Lambda[(\Sigma(P_0),\Sigma(\Sigma(P_0)))].
 \]
 
 Because both sets are nonempty,
+
 \[
-R[(S(P_0),S(S(P_0)))]
+\Lambda[(\Sigma(P_0),\Sigma(\Sigma(P_0)))]
 =
-R[(N(S(P_0)),N(S(S(P_0))))].
+\Lambda[(\Nu(\Sigma(P_0)),\Nu(\Sigma(\Sigma(P_0))))].
 \]
 
-By the definition of \(N\),
+By the definition of \(\Nu\),
+
 \[
-N(S(P_0))=P_0
+\Nu(\Sigma(P_0))=P_0
 \]
+
 and
+
 \[
-N(S(S(P_0)))=S(P_0).
+\Nu(\Sigma(\Sigma(P_0)))=\Sigma(P_0).
 \]
 
 Therefore
+
 \[
-R[(S(P_0),S(S(P_0)))]
+\Lambda[(\Sigma(P_0),\Sigma(\Sigma(P_0)))]
 =
-R[(P_0,S(P_0))].
+\Lambda[(P_0,\Sigma(P_0))].
 \]
 
 The first component is now \(P_0\), so
+
 \[
-R[(P_0,S(P_0))]
+\Lambda[(P_0,\Sigma(P_0))]
 =
-(P_0,S(P_0)).
+(P_0,\Sigma(P_0)).
 \]
 
 Since
+
 \[
-S(P_0)=P_1,
+\Sigma(P_0)=P_1,
 \]
+
 the reduced pair is
+
 \[
 (P_0,P_1).
 \]
 
 By signed notation,
+
 \[
 (P_0,P_1)\equiv-1.
 \]
 
 Therefore
+
 \[
 \boxed{
 (-2)+1=-1.
@@ -1704,138 +2073,162 @@ Therefore
 \subsection*{3. Subtracting Same Signs: \(1-2=-1\)}
 
 The base representations are
+
 \[
 \text{Pair 1}
 =
-(S(P_0),P_0)
+(\Sigma(P_0),P_0)
 \]
+
 and
+
 \[
 \text{Pair 2}
 =
-(S(S(P_0)),P_0).
+(\Sigma(\Sigma(P_0)),P_0).
 \]
 
 The expanded subtraction formula is
+
 \[
-\operatorname{Subtract}
+\Pi
 =
-R\left[
+\Lambda\left[
 \left(
-S^{A(S(P_0),P_0)}(P_0),
-S^{A(P_0,S(S(P_0)))}(P_0)
+\Sigma^{\Alpha(\Sigma(P_0),P_0)}(P_0),
+\Sigma^{\Alpha(P_0,\Sigma(\Sigma(P_0)))}(P_0)
 \right)
 \right].
 \]
 
 Evaluate the positive component:
+
 \[
-A(S(P_0),P_0)
+\Alpha(\Sigma(P_0),P_0)
 =
-E\left(
-S^{E(P_0)}(S(P_0))
+\Theta\left(
+\Sigma^{\Theta(P_0)}(\Sigma(P_0))
 \right).
 \]
 
 Since
+
 \[
-E(P_0)=0,
+\Theta(P_0)=0,
 \]
+
 we obtain
+
 \[
-A(S(P_0),P_0)
+\Alpha(\Sigma(P_0),P_0)
 =
-E(S^0(S(P_0)))
+\Theta(\Sigma^0(\Sigma(P_0)))
 =
-E(S(P_0))
+\Theta(\Sigma(P_0))
 =
 1.
 \]
 
 Thus
+
 \[
 k_{\mathrm{pos}}=1.
 \]
 
 Evaluate the negative component:
+
 \[
-A(P_0,S(S(P_0)))
+\Alpha(P_0,\Sigma(\Sigma(P_0)))
 =
-E\left(
-S^{E(S(S(P_0)))}(P_0)
+\Theta\left(
+\Sigma^{\Theta(\Sigma(\Sigma(P_0)))}(P_0)
 \right).
 \]
 
 Since
+
 \[
-E(S(S(P_0)))=2,
+\Theta(\Sigma(\Sigma(P_0)))=2,
 \]
+
 we obtain
+
 \[
-A(P_0,S(S(P_0)))
+\Alpha(P_0,\Sigma(\Sigma(P_0)))
 =
-E(S^2(P_0))
+\Theta(\Sigma^2(P_0))
 =
-E(S(S(P_0)))
+\Theta(\Sigma(\Sigma(P_0)))
 =
 2.
 \]
 
 Thus
+
 \[
 k_{\mathrm{neg}}=2.
 \]
 
 Construct the sets:
+
 \[
 P_x
 =
-S^1(P_0)
+\Sigma^1(P_0)
 =
-S(P_0),
+\Sigma(P_0),
 \]
+
 and
+
 \[
 P_y
 =
-S^2(P_0)
+\Sigma^2(P_0)
 =
-S(S(P_0)).
+\Sigma(\Sigma(P_0)).
 \]
 
 Therefore
+
 \[
-\operatorname{Subtract}
+\Pi
 =
-R[(S(P_0),S(S(P_0)))].
+\Lambda[(\Sigma(P_0),\Sigma(\Sigma(P_0)))].
 \]
 
 Reduction gives
+
 \[
-R[(S(P_0),S(S(P_0)))]
+\Lambda[(\Sigma(P_0),\Sigma(\Sigma(P_0)))]
 =
-R[(P_0,S(P_0))]
+\Lambda[(P_0,\Sigma(P_0))]
 =
-(P_0,S(P_0)).
+(P_0,\Sigma(P_0)).
 \]
 
 Since
+
 \[
-S(P_0)=P_1,
+\Sigma(P_0)=P_1,
 \]
+
 we obtain
+
 \[
-(P_0,S(P_0))
+(P_0,\Sigma(P_0))
 =
 (P_0,P_1).
 \]
 
 By signed notation,
+
 \[
 (P_0,P_1)\equiv-1.
 \]
 
 Therefore
+
 \[
 \boxed{
 1-2=-1.
@@ -1845,300 +2238,171 @@ Therefore
 \subsection*{4. Subtracting Opposite Signs: \(1-(-2)=3\)}
 
 The base representations are
+
 \[
 \text{Pair 1}
 =
-(S(P_0),P_0)
+(\Sigma(P_0),P_0)
 \]
+
 and
+
 \[
 \text{Pair 2}
 =
-(P_0,S(S(P_0))).
+(P_0,\Sigma(\Sigma(P_0))).
 \]
 
 The expanded subtraction formula is
+
 \[
-\operatorname{Subtract}
+\Pi
 =
-R\left[
+\Lambda\left[
 \left(
-S^{A(S(P_0),S(S(P_0)))}(P_0),
-S^{A(P_0,P_0)}(P_0)
+\Sigma^{\Alpha(\Sigma(P_0),\Sigma(\Sigma(P_0)))}(P_0),
+\Sigma^{\Alpha(P_0,P_0)}(P_0)
 \right)
 \right].
 \]
 
 Evaluate the positive component:
+
 \[
-A(S(P_0),S(S(P_0)))
+\Alpha(\Sigma(P_0),\Sigma(\Sigma(P_0)))
 =
-E\left(
-S^{E(S(S(P_0)))}(S(P_0))
+\Theta\left(
+\Sigma^{\Theta(\Sigma(\Sigma(P_0)))}(\Sigma(P_0))
 \right).
 \]
 
 Since
+
 \[
-E(S(S(P_0)))=2,
+\Theta(\Sigma(\Sigma(P_0)))=2,
 \]
+
 we obtain
+
 \[
-A(S(P_0),S(S(P_0)))
+\Alpha(\Sigma(P_0),\Sigma(\Sigma(P_0)))
 =
-E(S^2(S(P_0))).
+\Theta(\Sigma^2(\Sigma(P_0))).
 \]
 
 Therefore
+
 \[
-A(S(P_0),S(S(P_0)))
+\Alpha(\Sigma(P_0),\Sigma(\Sigma(P_0)))
 =
-E(S(S(S(P_0))))
+\Theta(\Sigma(\Sigma(\Sigma(P_0))))
 =
 3.
 \]
 
 Thus
+
 \[
 k_{\mathrm{pos}}=3.
 \]
 
 Evaluate the negative component:
+
 \[
-A(P_0,P_0)
+\Alpha(P_0,P_0)
 =
-E\left(
-S^{E(P_0)}(P_0)
+\Theta\left(
+\Sigma^{\Theta(P_0)}(P_0)
 \right).
 \]
 
 Since
+
 \[
-E(P_0)=0,
+\Theta(P_0)=0,
 \]
+
 we obtain
+
 \[
-A(P_0,P_0)
+\Alpha(P_0,P_0)
 =
-E(P_0)
+\Theta(P_0)
 =
 0.
 \]
 
 Thus
+
 \[
 k_{\mathrm{neg}}=0.
 \]
 
 Construct the sets:
+
 \[
 P_x
 =
-S^3(P_0)
+\Sigma^3(P_0)
 =
-S(S(S(P_0))),
+\Sigma(\Sigma(\Sigma(P_0))),
 \]
+
 and
+
 \[
 P_y
 =
-S^0(P_0)
+\Sigma^0(P_0)
 =
 P_0.
 \]
 
 Therefore
+
 \[
-\operatorname{Subtract}
+\Pi
 =
-R[(S(S(S(P_0))),P_0)].
+\Lambda[(\Sigma(\Sigma(\Sigma(P_0))),P_0)].
 \]
 
 Since the second component is already \(P_0\),
+
 \[
-R[(S(S(S(P_0))),P_0)]
+\Lambda[(\Sigma(\Sigma(\Sigma(P_0))),P_0)]
 =
-(S(S(S(P_0))),P_0).
+(\Sigma(\Sigma(\Sigma(P_0))),P_0).
 \]
 
 Since
+
 \[
-S(S(S(P_0)))=P_3,
+\Sigma(\Sigma(\Sigma(P_0)))=P_3,
 \]
+
 the reduced pair is
+
 \[
 (P_3,P_0).
 \]
 
 By signed notation,
+
 \[
 (P_3,P_0)\equiv3.
 \]
 
 Therefore
+
 \[
 \boxed{
 1-(-2)=3.
 }
 \]
 
-\section*{Conclusion}
-
-Beginning with
-\[
-P_0=\varnothing,
-\]
-the canonical sets are generated by the well-defined successor function
-\[
-S(P_n)=P_{n+1}.
-\]
-
-The evaluation function \(E\) associates each canonical construction stage with exactly one natural-number symbol:
-\[
-E(P_n)=n.
-\]
-
-This produces
-\[
-\mathbb N=\{0,1,2,3,\ldots\}.
-\]
-
-Addition is then defined by
-\[
-\boxed{
-A(P_1,P_2)
-=
-E\left(
-S^{E(P_2)}(P_1)
-\right),
-}
-\]
-with
-\[
-E(P_1)+E(P_2)
-:=
-A(P_1,P_2).
-\]
-
-Commutativity follows by structural induction:
-\[
-\boxed{
-E(P_1)+E(P_2)
-=
-E(P_2)+E(P_1).
-}
-\]
-
-For nonnegative results, subtraction is defined by the deterministic removal function
-\[
-N(P_n)=P_{n-1}
-\]
-and
-\[
-\boxed{
-D(P_1,P_2)
-=
-E\left(
-N^{E(P_2)}(P_1)
-\right).
-}
-\]
-
-Signed integers are then constructed as reduced ordered pairs of canonical sets. The reduction function
-\[
-\boxed{
-R[(P_x,P_y)]
-=
-\begin{cases}
-R[(N(P_x),N(P_y))],
-&
-E(P_x)>0\text{ and }E(P_y)>0,
-\\[6pt]
-(P_x,P_y),
-&
-E(P_x)=0\text{ or }E(P_y)=0
-\end{cases}
-}
-\]
-always returns a reduced ordered pair.
-
-Only after these ordered-pair objects have been constructed is signed notation introduced:
-\[
-(P_n,P_0)\equiv n,
-\]
-\[
-(P_0,P_0)\equiv0,
-\]
-and
-\[
-(P_0,P_n)\equiv-n.
-\]
-
-Signed addition is defined by
-\[
-\boxed{
-\operatorname{Add}
-\left(
-(P_a,P_b),(P_c,P_d)
-\right)
-=
-R\left[
-\left(
-S^{A(P_a,P_c)}(P_0),
-S^{A(P_b,P_d)}(P_0)
-\right)
-\right],
-}
-\]
-while signed subtraction is defined by
-\[
-\boxed{
-\operatorname{Subtract}
-\left(
-(P_a,P_b),(P_c,P_d)
-\right)
-=
-R\left[
-\left(
-S^{A(P_a,P_d)}(P_0),
-S^{A(P_b,P_c)}(P_0)
-\right)
-\right].
-}
-\]
-
-The explicit evaluations establish
-\[
-1+2=3,
-\]
-\[
-3-1=2,
-\]
-\[
-1-2=-1,
-\]
-\[
-2-1=1,
-\]
-\[
-2-2=0,
-\]
-\[
-(-2)+(-1)=-3,
-\]
-\[
-(-2)+1=-1,
-\]
-and
-\[
-1-(-2)=3.
-\]
-
-Thus the natural-number and signed-integer operations used above are obtained from the base set \(P_0\), deterministic adjunction and removal, evaluation of canonical finite sets, and reduction of ordered pairs.
 \section*{Non-Unique Signed-Pair Representations}
 
-The signed-pair construction admits infinitely many unreduced
-representations of the same signed integer.
+The signed-pair construction admits infinitely many unreduced representations of the same signed integer.
 
 Let
 
@@ -2156,28 +2420,27 @@ Construct the shifted pair
 
 \[
 \left(
-S^{E(P_v)}(P_a),
-S^{E(P_v)}(P_b)
+\Sigma^{\Theta(P_v)}(P_a),
+\Sigma^{\Theta(P_v)}(P_b)
 \right).
 \]
 
 Since
 
 \[
-E(P_v)=v,
+\Theta(P_v)=v,
 \]
 
-and applying \(S\) exactly \(v\) times to a canonical set \(P_a\)
-produces \(P_{a+v}\), we have
+and applying \(\Sigma\) exactly \(v\) times to a canonical set \(P_a\) produces \(P_{a+v}\), we have
 
 \[
-S^{E(P_v)}(P_a)=P_{a+v}
+\Sigma^{\Theta(P_v)}(P_a)=P_{a+v}
 \]
 
 and
 
 \[
-S^{E(P_v)}(P_b)=P_{b+v}.
+\Sigma^{\Theta(P_v)}(P_b)=P_{b+v}.
 \]
 
 Hence the shifted pair may be written
@@ -2185,8 +2448,8 @@ Hence the shifted pair may be written
 \[
 \boxed{
 \left(
-S^{E(P_v)}(P_a),
-S^{E(P_v)}(P_b)
+\Sigma^{\Theta(P_v)}(P_a),
+\Sigma^{\Theta(P_v)}(P_b)
 \right)
 =
 (P_{a+v},P_{b+v}).
@@ -2196,13 +2459,14 @@ S^{E(P_v)}(P_b)
 \subsection*{Invariance Under Equal Shifting}
 
 \begin{theorem}
+
 For every \(P_a,P_b,P_v\in\mathcal P\),
 
 \[
 \boxed{
-R[(P_a,P_b)]
+\Lambda[(P_a,P_b)]
 =
-R[(P_{a+v},P_{b+v})].
+\Lambda[(P_{a+v},P_{b+v})].
 }
 \]
 
@@ -2210,16 +2474,17 @@ Equivalently,
 
 \[
 \boxed{
-R[(P_a,P_b)]
+\Lambda[(P_a,P_b)]
 =
-R\left[
+\Lambda\left[
 \left(
-S^{E(P_v)}(P_a),
-S^{E(P_v)}(P_b)
+\Sigma^{\Theta(P_v)}(P_a),
+\Sigma^{\Theta(P_v)}(P_b)
 \right)
 \right].
 }
 \]
+
 \end{theorem}
 
 \begin{proof}
@@ -2232,34 +2497,31 @@ The pair
 
 contains the same additional contribution \(v\) in both components.
 
-By the definition of \(R\), whenever both components are nonempty,
-one application of \(N\) is made to each component simultaneously.
+By the definition of \(\Lambda\), whenever both components are nonempty, one application of \(\Nu\) is made to each component simultaneously.
 
 Applying this simultaneous removal \(v\) times gives
 
 \[
-R[(P_{a+v},P_{b+v})]
+\Lambda[(P_{a+v},P_{b+v})]
 =
-R[(P_a,P_b)].
+\Lambda[(P_a,P_b)].
 \]
 
-Therefore adding the same canonical contribution to both components
-does not change the reduced signed integer represented by the pair.
+Therefore adding the same canonical contribution to both components does not change the reduced signed integer represented by the pair.
 
 Hence
 
 \[
 \boxed{
-R[(P_{a+v},P_{b+v})]
+\Lambda[(P_{a+v},P_{b+v})]
 =
-R[(P_a,P_b)].
+\Lambda[(P_a,P_b)].
 }
 \]
 
 \end{proof}
 
-Thus a single signed integer does not have only one possible
-unreduced representation.
+Thus a single signed integer does not have only one possible unreduced representation.
 
 For example,
 
@@ -2291,17 +2553,14 @@ Because the canonical family
 \{P_0,P_1,P_2,P_3,\ldots\}
 \]
 
-contains infinitely many canonical sets, there are infinitely many
-possible choices of \(P_v\), and therefore infinitely many unreduced
-representations of the same signed integer.
-
+contains infinitely many canonical sets, there are infinitely many possible choices of \(P_v\), and therefore infinitely many unreduced representations of the same signed integer.
 
 \section*{Non-Unique Input Representations for Signed Addition}
 
 Consider
 
 \[
-\operatorname{Add}
+\Gamma
 \left(
 (P_a,P_b),(P_c,P_d)
 \right).
@@ -2313,15 +2572,14 @@ Let
 P_v,P_w\in\mathcal P.
 \]
 
-Independently shift the two input pairs by \(P_v\) and \(P_w\),
-respectively.
+Independently shift the two input pairs by \(P_v\) and \(P_w\), respectively.
 
 The first pair becomes
 
 \[
 \left(
-S^{E(P_v)}(P_a),
-S^{E(P_v)}(P_b)
+\Sigma^{\Theta(P_v)}(P_a),
+\Sigma^{\Theta(P_v)}(P_b)
 \right),
 \]
 
@@ -2329,8 +2587,8 @@ and the second becomes
 
 \[
 \left(
-S^{E(P_w)}(P_c),
-S^{E(P_w)}(P_d)
+\Sigma^{\Theta(P_w)}(P_c),
+\Sigma^{\Theta(P_w)}(P_d)
 \right).
 \]
 
@@ -2340,21 +2598,21 @@ Therefore,
 \boxed{
 \begin{aligned}
 &
-\operatorname{Add}
+\Gamma
 \left(
 (P_a,P_b),(P_c,P_d)
 \right)
 \\[4pt]
 &=
-\operatorname{Add}
+\Gamma
 \left(
 \left(
-S^{E(P_v)}(P_a),
-S^{E(P_v)}(P_b)
+\Sigma^{\Theta(P_v)}(P_a),
+\Sigma^{\Theta(P_v)}(P_b)
 \right),
 \left(
-S^{E(P_w)}(P_c),
-S^{E(P_w)}(P_d)
+\Sigma^{\Theta(P_w)}(P_c),
+\Sigma^{\Theta(P_w)}(P_d)
 \right)
 \right).
 \end{aligned}
@@ -2365,12 +2623,12 @@ Using the canonical-set notation, this is equivalently
 
 \[
 \boxed{
-\operatorname{Add}
+\Gamma
 \left(
 (P_a,P_b),(P_c,P_d)
 \right)
 =
-\operatorname{Add}
+\Gamma
 \left(
 (P_{a+v},P_{b+v}),
 (P_{c+w},P_{d+w})
@@ -2379,6 +2637,7 @@ Using the canonical-set notation, this is equivalently
 \]
 
 \begin{theorem}
+
 For every
 
 \[
@@ -2389,12 +2648,12 @@ the equality
 
 \[
 \boxed{
-\operatorname{Add}
+\Gamma
 \left(
 (P_a,P_b),(P_c,P_d)
 \right)
 =
-\operatorname{Add}
+\Gamma
 \left(
 (P_{a+v},P_{b+v}),
 (P_{c+w},P_{d+w})
@@ -2403,6 +2662,7 @@ the equality
 \]
 
 holds.
+
 \end{theorem}
 
 \begin{proof}
@@ -2410,44 +2670,39 @@ holds.
 By the preceding theorem,
 
 \[
-R[(P_{a+v},P_{b+v})]
+\Lambda[(P_{a+v},P_{b+v})]
 =
-R[(P_a,P_b)]
+\Lambda[(P_a,P_b)]
 \]
 
 and independently,
 
 \[
-R[(P_{c+w},P_{d+w})]
+\Lambda[(P_{c+w},P_{d+w})]
 =
-R[(P_c,P_d)].
+\Lambda[(P_c,P_d)].
 \]
 
-Thus each shifted pair represents exactly the same signed integer
-as its corresponding original pair.
+Thus each shifted pair represents exactly the same signed integer as its corresponding original pair.
 
-The definition of signed addition combines the positive components,
-combines the negative components, and then applies \(R\).
+The definition of signed addition combines the positive components, combines the negative components, and then applies \(\Lambda\).
 
-Adding \(v\) to both components of the first pair contributes the
-same additional amount to the positive and negative sides.
+Adding \(v\) to both components of the first pair contributes the same additional amount to the positive and negative sides.
 
-Likewise, adding \(w\) to both components of the second pair
-contributes the same additional amount to the positive and negative
-sides.
+Likewise, adding \(w\) to both components of the second pair contributes the same additional amount to the positive and negative sides.
 
-These equal contributions cancel under \(R\).
+These equal contributions cancel under \(\Lambda\).
 
 Therefore
 
 \[
-\operatorname{Add}
+\Gamma
 \left(
 (P_{a+v},P_{b+v}),
 (P_{c+w},P_{d+w})
 \right)
 =
-\operatorname{Add}
+\Gamma
 \left(
 (P_a,P_b),(P_c,P_d)
 \right).
@@ -2455,23 +2710,20 @@ Therefore
 
 \end{proof}
 
-
 \subsection*{Infinitely Many Addition Representations}
 
-Since \(P_v\) and \(P_w\) may each be chosen independently from the
-infinite family
+Since \(P_v\) and \(P_w\) may each be chosen independently from the infinite family
 
 \[
 \mathcal P,
 \]
 
-a single signed addition may be represented by infinitely many
-different input tuples.
+a single signed addition may be represented by infinitely many different input tuples.
 
 Thus
 
 \[
-\operatorname{Add}
+\Gamma
 \left(
 (P_a,P_b),(P_c,P_d)
 \right)
@@ -2480,7 +2732,7 @@ Thus
 may equivalently be evaluated using
 
 \[
-\operatorname{Add}
+\Gamma
 \left(
 (P_{a+v},P_{b+v}),
 (P_{c+w},P_{d+w})
@@ -2496,14 +2748,14 @@ v,w\in\mathbb N.
 For example, all of the following produce the same signed output:
 
 \[
-\operatorname{Add}
+\Gamma
 \left(
 (P_a,P_b),(P_c,P_d)
 \right),
 \]
 
 \[
-\operatorname{Add}
+\Gamma
 \left(
 (P_{a+1},P_{b+1}),
 (P_{c+1},P_{d+1})
@@ -2511,7 +2763,7 @@ For example, all of the following produce the same signed output:
 \]
 
 \[
-\operatorname{Add}
+\Gamma
 \left(
 (P_{a+5},P_{b+5}),
 (P_{c+9},P_{d+9})
@@ -2521,7 +2773,7 @@ For example, all of the following produce the same signed output:
 and
 
 \[
-\operatorname{Add}
+\Gamma
 \left(
 (P_{a+v},P_{b+v}),
 (P_{c+w},P_{d+w})
@@ -2530,15 +2782,14 @@ and
 
 for arbitrary \(v\) and \(w\).
 
-Consequently, the mapping from such input representations to the
-reduced signed output is not injective.
+Consequently, the mapping from such input representations to the reduced signed output is not injective.
 
 That is, if only the final reduced output
 
 \[
 P_{\mathrm{out}}
 =
-\operatorname{Add}
+\Gamma
 \left(
 (P_{a+v},P_{b+v}),
 (P_{c+w},P_{d+w})
@@ -2553,20 +2804,13 @@ v
 w.
 \]
 
-Nor does it uniquely determine the particular unreduced input pairs
-used in the computation.
+Nor does it uniquely determine the particular unreduced input pairs used in the computation.
 
-There are infinitely many distinct admissible input representations
-that may correspond to the same signed output.
+There are infinitely many distinct admissible input representations that may correspond to the same signed output.
 
 This is a many-to-one property of the representation system.
 
-It should not by itself be interpreted as a proof of computational
-hardness or as a statement concerning the complexity-theoretic
-question \(P\) versus \(NP\). Rather, it establishes that information
-about the particular input representation is lost when the inputs
-are reduced to a single signed result.
-
+It should not by itself be interpreted as a proof of computational hardness or as a statement concerning the complexity-theoretic question \(P\) versus \(NP\). Rather, it establishes that information about the particular input representation is lost when the inputs are reduced to a single signed result.
 
 \section*{Non-Unique Input Representations for Signed Subtraction}
 
@@ -2575,7 +2819,7 @@ The same construction applies to signed subtraction.
 Recall that
 
 \[
-\operatorname{Subtract}
+\Pi
 \left(
 (P_a,P_b),(P_c,P_d)
 \right)
@@ -2619,12 +2863,12 @@ Therefore,
 
 \[
 \boxed{
-\operatorname{Subtract}
+\Pi
 \left(
 (P_a,P_b),(P_c,P_d)
 \right)
 =
-\operatorname{Subtract}
+\Pi
 \left(
 (P_{a+v},P_{b+v}),
 (P_{c+w},P_{d+w})
@@ -2638,38 +2882,35 @@ Equivalently,
 \boxed{
 \begin{aligned}
 &
-\operatorname{Subtract}
+\Pi
 \left(
 (P_a,P_b),(P_c,P_d)
 \right)
 \\[4pt]
 &=
-\operatorname{Subtract}
+\Pi
 \left(
 \left(
-S^{E(P_v)}(P_a),
-S^{E(P_v)}(P_b)
+\Sigma^{\Theta(P_v)}(P_a),
+\Sigma^{\Theta(P_v)}(P_b)
 \right),
 \left(
-S^{E(P_w)}(P_c),
-S^{E(P_w)}(P_d)
+\Sigma^{\Theta(P_w)}(P_c),
+\Sigma^{\Theta(P_w)}(P_d)
 \right)
 \right).
 \end{aligned}
 }
 \]
 
-Hence signed subtraction also admits infinitely many distinct
-unreduced input representations that produce the same reduced
-signed output.
-
+Hence signed subtraction also admits infinitely many distinct unreduced input representations that produce the same reduced signed output.
 
 \section*{Input-to-Output Representation Expansion}
 
 A standard signed addition
 
 \[
-\operatorname{Add}
+\Gamma
 \left(
 (P_a,P_b),(P_c,P_d)
 \right)
@@ -2681,8 +2922,7 @@ requires four canonical input sets:
 P_a,\qquad P_b,\qquad P_c,\qquad P_d.
 \]
 
-Under the non-unique representation construction, two additional
-canonical sets may be chosen:
+Under the non-unique representation construction, two additional canonical sets may be chosen:
 
 \[
 P_v
@@ -2690,11 +2930,9 @@ P_v
 P_w.
 \]
 
-These determine the independent shifts applied to the two signed
-input pairs.
+These determine the independent shifts applied to the two signed input pairs.
 
-The complete representation may therefore depend upon the six
-canonical sets
+The complete representation may therefore depend upon the six canonical sets
 
 \[
 \boxed{
@@ -2707,25 +2945,25 @@ P_w.
 }
 \]
 
-while the function ultimately returns a single signed-integer value,
-represented canonically by one reduced signed pair.
+while the function ultimately returns a single signed-integer value, represented canonically by one reduced signed pair.
 
-Thus, when the output is regarded as one signed value, the
-construction has a
+If one merely counts the six selected canonical-set parameters against the one resulting signed value, the representation has the bookkeeping description
 
 \[
 \boxed{6:1}
 \]
 
-input-set-to-output-value relationship:
+of input-set parameters to output value:
 
 \[
 \boxed{
-6\text{ canonical input sets}
+6\text{ selected canonical-set parameters}
 \longrightarrow
 1\text{ signed output value}.
 }
 \]
+
+This is not a statement that the function has exactly six possible inputs or six preimages for each output. The preceding results show the opposite: infinitely many distinct shifted input representations can produce the same signed output.
 
 The sets \(P_v\) and \(P_w\) are optional in the sense that choosing
 
@@ -2737,19 +2975,1619 @@ P_w=P_0
 
 returns the original unshifted representation.
 
-Therefore the ordinary signed operation is contained as the special
-case
+Therefore the ordinary signed operation is contained as the special case
 
 \[
 v=w=0.
 \]
 
-The additional sets \(P_v\) and \(P_w\) do not alter the resulting
-signed value. They alter only the particular unreduced
-representation used to obtain that value.
+The additional sets \(P_v\) and \(P_w\) do not alter the resulting signed value. They alter only the particular unreduced representation used to obtain that value.
 
-This distinction between the represented value and the particular
-representation used to encode that value will be relevant when
-considering later applications involving concealed or randomized
-representations.
+This distinction between the represented value and the particular representation used to encode that value will be relevant when considering later applications involving concealed or randomized representations.
+
+\section*{Defining Multiplication}
+
+We now define multiplication on signed integers using the signed-pair representation already constructed.
+
+Let
+
+\[
+(P_a,P_b)
+\]
+
+and
+
+\[
+(P_c,P_d)
+\]
+
+be signed-pair representations.
+
+First reduce both pairs:
+
+\[
+\Lambda[(P_a,P_b)]
+\]
+
+and
+
+\[
+\Lambda[(P_c,P_d)].
+\]
+
+Let the signed output symbols represented by these reduced pairs be
+
+\[
+b
+\]
+
+and
+
+\[
+c,
+\]
+
+respectively. Thus,
+
+\[
+\Lambda[(P_a,P_b)]\equiv b
+\]
+
+and
+
+\[
+\Lambda[(P_c,P_d)]\equiv c.
+\]
+
+The multiplication function for the two signed-pair inputs will be defined after multiplication of the signed symbols \(b\) and \(c\) has been constructed below.
+
+\subsection*{1. Absolute-Value Function}
+
+We first define a function
+
+\[
+\operatorname{abs}
+\]
+
+on signed output symbols.
+
+For any signed output symbol \(\delta\), define
+
+\[
+\boxed{
+\operatorname{abs}(\delta)
+=
+\begin{cases}
+\delta,
+&
+\delta\text{ is nonnegative},
+\\[6pt]
+\text{the corresponding nonnegative symbol obtained by removing the sign }-,
+&
+\delta\text{ is negative}.
+\end{cases}
+}
+\]
+
+Thus,
+
+\[
+\operatorname{abs}(0)=0,
+\]
+
+\[
+\operatorname{abs}(1)=1,
+\]
+
+\[
+\operatorname{abs}(2)=2,
+\]
+
+and
+
+\[
+\operatorname{abs}(-1)=1,
+\]
+
+\[
+\operatorname{abs}(-2)=2,
+\]
+
+and so on.
+
+Hence
+
+\[
+\operatorname{abs}(\delta)
+\]
+
+always produces a nonnegative natural-number symbol.
+
+\subsection*{2. Repeated Blocks of Successor Applications}
+
+We now introduce the notation
+
+\[
+\Sigma^u_v(P)
+\]
+
+for nonnegative natural-number symbols
+
+\[
+u,v\in\mathbb N.
+\]
+
+The expression
+
+\[
+\Sigma^u_v(P)
+\]
+
+means:
+
+\begin{quote}
+apply \(\Sigma\) to the input \(P\) exactly \(u\) times per block, and repeat that block exactly \(v\) times.
+\end{quote}
+
+This notation is defined recursively and therefore does not assume multiplication.
+
+For every canonical set \(P\), define the base case
+
+\[
+\boxed{
+\Sigma^u_0(P)=P.
+}
+\]
+
+Thus zero blocks of \(u\) successor applications leave the input unchanged.
+
+For the recursive step, suppose
+
+\[
+\Sigma^u_v(P)
+\]
+
+has already been constructed.
+
+Then define
+
+\[
+\boxed{
+\Sigma^u_{v+1}(P)
+=
+\Sigma^u
+\left(
+\Sigma^u_v(P)
+\right).
+}
+\]
+
+Here
+
+\[
+\Sigma^u(Q)
+\]
+
+means the already-defined operation of applying \(\Sigma\) to \(Q\) exactly \(u\) times.
+
+Therefore each increase of the lower index by one applies one additional block of \(u\) successor operations.
+
+For example,
+
+\[
+\Sigma^3_0(P_0)=P_0.
+\]
+
+Then
+
+\[
+\Sigma^3_1(P_0)
+=
+\Sigma^3(P_0),
+\]
+
+and
+
+\[
+\Sigma^3_2(P_0)
+=
+\Sigma^3
+\left(
+\Sigma^3_1(P_0)
+\right).
+\]
+
+Substituting the definition of \(\Sigma^3_1(P_0)\),
+
+\[
+\Sigma^3_2(P_0)
+=
+\Sigma^3
+\left(
+\Sigma^3(P_0)
+\right).
+\]
+
+Expanding the first block,
+
+\[
+\Sigma^3(P_0)
+=
+\Sigma(\Sigma(\Sigma(P_0))).
+\]
+
+Therefore,
+
+\[
+\Sigma^3_2(P_0)
+=
+\Sigma^3
+\left(
+\Sigma(\Sigma(\Sigma(P_0)))
+\right).
+\]
+
+Expanding the second block gives
+
+\[
+\Sigma^3_2(P_0)
+=
+\Sigma(\Sigma(\Sigma(\Sigma(\Sigma(\Sigma(P_0)))))).
+\]
+
+Hence
+
+\[
+\Theta\left(\Sigma^3_2(P_0)\right)=6.
+\]
+
+The value \(6\) is therefore produced from repeated successor operations alone, without assuming multiplication beforehand.
+
+More generally,
+
+\[
+\Sigma^u_v(P_0)
+\]
+
+constructs the canonical set obtained by applying \(\Sigma\) in \(v\) consecutive blocks, each containing exactly \(u\) applications.
+
+\subsection*{3. Unsigned Multiplication}
+
+Let
+
+\[
+b,c
+\]
+
+be the signed output symbols obtained from
+
+\[
+\Lambda[(P_a,P_b)]
+\]
+
+and
+
+\[
+\Lambda[(P_c,P_d)].
+\]
+
+Since
+
+\[
+\operatorname{abs}(b)
+\]
+
+and
+
+\[
+\operatorname{abs}(c)
+\]
+
+are both nonnegative natural-number symbols, the expression
+
+\[
+\Sigma^{\operatorname{abs}(b)}_{\operatorname{abs}(c)}(P_0)
+\]
+
+is well-defined.
+
+We define the unsigned magnitude of the multiplication result by
+
+\[
+\boxed{
+M(b,c)
+=
+\Theta\left(
+\Sigma^{\operatorname{abs}(b)}_{\operatorname{abs}(c)}
+(P_0)
+\right).
+}
+\]
+
+Thus \(M(b,c)\) is always a nonnegative natural-number symbol.
+
+For example, if
+
+\[
+b=3
+\]
+
+and
+
+\[
+c=2,
+\]
+
+then
+
+\[
+M(3,2)
+=
+\Theta\left(
+\Sigma^3_2(P_0)
+\right).
+\]
+
+From the recursive construction above,
+
+\[
+\Sigma^3_2(P_0)
+=
+\Sigma(\Sigma(\Sigma(\Sigma(\Sigma(\Sigma(P_0)))))),
+\]
+
+so
+
+\[
+M(3,2)=6.
+\]
+
+Likewise, if
+
+\[
+b=-3
+\]
+
+and
+
+\[
+c=2,
+\]
+
+then
+
+\[
+\operatorname{abs}(-3)=3
+\]
+
+and
+
+\[
+\operatorname{abs}(2)=2,
+\]
+
+so the unsigned magnitude is still
+
+\[
+M(-3,2)
+=
+\Theta\left(
+\Sigma^3_2(P_0)
+\right)
+=
+6.
+\]
+
+The sign of the final multiplication result is determined separately.
+
+\subsection*{4. Sign of the Multiplication Result}
+
+The sign of the result depends on the signs of
+
+\[
+b
+\]
+
+and
+
+\[
+c.
+\]
+
+If either input is zero, define
+
+\[
+\boxed{
+\Upsilon(b,c)=0
+}
+\]
+
+whenever
+
+\[
+b=0
+\]
+
+or
+
+\[
+c=0.
+\]
+
+If \(b\) and \(c\) are both positive, the result is nonnegative:
+
+\[
+\boxed{
+\Upsilon(b,c)
+=
+M(b,c).
+}
+\]
+
+If \(b\) and \(c\) are both negative, the result is also nonnegative:
+
+\[
+\boxed{
+\Upsilon(b,c)
+=
+M(b,c).
+}
+\]
+
+If exactly one of \(b\) and \(c\) is negative, the result is the corresponding negative output symbol:
+
+\[
+\boxed{
+\Upsilon(b,c)
+=
+-M(b,c).
+}
+\]
+
+Therefore,
+
+\[
+\boxed{
+\Upsilon(b,c)
+=
+\begin{cases}
+0,
+&
+b=0\text{ or }c=0,
+\\[6pt]
+M(b,c),
+&
+b,c\text{ have the same sign},
+\\[6pt]
+-M(b,c),
+&
+b,c\text{ have different signs}.
+\end{cases}
+}
+\]
+
+Substituting the definition of \(M(b,c)\),
+
+\[
+\boxed{
+\Upsilon(b,c)
+=
+\begin{cases}
+0,
+&
+b=0\text{ or }c=0,
+\\[8pt]
+\Theta\left(
+\Sigma^{\operatorname{abs}(b)}_{\operatorname{abs}(c)}
+(P_0)
+\right),
+&
+b,c\text{ have the same sign},
+\\[10pt]
+-
+\Theta\left(
+\Sigma^{\operatorname{abs}(b)}_{\operatorname{abs}(c)}
+(P_0)
+\right),
+&
+b,c\text{ have different signs}.
+\end{cases}
+}
+\]
+
+Once \(\Upsilon(b,c)\) has been defined, we introduce the ordinary multiplication notation
+
+\[
+\boxed{
+b\cdot c:=\Upsilon(b,c).
+}
+\]
+
+This notation does not introduce a new operation; it is only a shorter name for the multiplication function already constructed.
+
+\subsection*{5. Multiplication of Signed-Pair Representations}
+
+Returning to the original signed-pair inputs,
+
+\[
+(P_a,P_b)
+\]
+
+and
+
+\[
+(P_c,P_d),
+\]
+
+let
+
+\[
+\Lambda[(P_a,P_b)]\equiv b
+\]
+
+and
+
+\[
+\Lambda[(P_c,P_d)]\equiv c.
+\]
+
+Then define
+
+\[
+\boxed{
+\Upsilon
+\left[
+(P_a,P_b),(P_c,P_d)
+\right]
+=
+\Upsilon(b,c).
+}
+\]
+
+Equivalently, reduce both input pairs first, identify the signed symbols represented by those reduced pairs as \(b\) and \(c\), and then evaluate \(\Upsilon(b,c)\). The reduction function itself still returns a reduced ordered pair; the symbols \(b\) and \(c\) are the signed notations assigned to those reduced pairs.
+
+Expanding the definition completely,
+
+\[
+\boxed{
+\Upsilon
+\left[
+(P_a,P_b),(P_c,P_d)
+\right]
+=
+\begin{cases}
+0,
+&
+b=0\text{ or }c=0,
+\\[8pt]
+\Theta\left(
+\Sigma^{\operatorname{abs}(b)}_{\operatorname{abs}(c)}
+(P_0)
+\right),
+&
+b,c\text{ have the same sign},
+\\[10pt]
+-
+\Theta\left(
+\Sigma^{\operatorname{abs}(b)}_{\operatorname{abs}(c)}
+(P_0)
+\right),
+&
+b,c\text{ have different signs},
+\end{cases}
+}
+\]
+
+where
+
+\[
+\Lambda[(P_a,P_b)]\equiv b
+\]
+
+and
+
+\[
+\Lambda[(P_c,P_d)]\equiv c.
+\]
+
+Thus multiplication is constructed entirely from the previously defined operations
+
+\[
+P_0,
+\qquad
+\Sigma,
+\qquad
+\Theta,
+\qquad
+\Lambda,
+\]
+
+together with the recursively defined repeated-block notation
+
+\[
+\Sigma^u_v(P),
+\]
+
+which is instantiated in multiplication with
+
+\[
+u=\operatorname{abs}(b),
+\qquad
+v=\operatorname{abs}(c).
+\]
+
+\section*{Euclidean Division and Modular Remainders}
+
+We now define a division-and-remainder procedure using the previously constructed signed integers, absolute value, successor operation, and deterministic element removal.
+
+Let
+
+\[
+(P_a,P_b)
+\]
+
+and
+
+\[
+(P_c,P_d)
+\]
+
+be signed-pair representations.
+
+Reduce both pairs and let the signed symbols represented by the reduced pairs be
+
+\[
+b
+\]
+
+and
+
+\[
+c,
+\]
+
+respectively. Thus
+
+\[
+\Lambda[(P_a,P_b)]\equiv b
+\]
+
+and
+
+\[
+\Lambda[(P_c,P_d)]\equiv c.
+\]
+
+The divisor must be nonzero, so throughout this section assume
+
+\[
+\boxed{c\neq0.}
+\]
+
+As in the multiplication section, \(b\) and \(c\) here denote signed output symbols represented by reduced pairs.
+
+\subsection*{1. Magnitude Sets}
+
+Construct the canonical set representing the magnitude of the dividend:
+
+\[
+Q_0
+=
+\Sigma^{\operatorname{abs}(b)}(P_0).
+\]
+
+Construct the canonical set representing the magnitude of the divisor:
+
+\[
+C
+=
+\Sigma^{\operatorname{abs}(c)}(P_0).
+\]
+
+Therefore
+
+\[
+\Theta(Q_0)=\operatorname{abs}(b)
+\]
+
+and
+
+\[
+\Theta(C)=\operatorname{abs}(c).
+\]
+
+Also initialize an empty output-count set
+
+\[
+O_0=P_0.
+\]
+
+The set \(Q_n\) will record the amount still remaining after \(n\) complete divisor-sized removals, while \(O_n\) will record how many complete removals have occurred.
+
+\subsection*{2. Full-Block Removal Rule}
+
+A divisor-sized block may be removed only in full. No partial block is permitted.
+
+Suppose \(Q_n\) and \(O_n\) have already been constructed. If
+
+\[
+\Theta(C)\leq\Theta(Q_n),
+\]
+
+then define
+
+\[
+\boxed{
+Q_{n+1}
+=
+\Nu^{\Theta(C)}(Q_n)
+}
+\]
+
+and simultaneously define
+
+\[
+\boxed{
+O_{n+1}=\Sigma(O_n).
+}
+\]
+
+Thus one complete block containing exactly \(\Theta(C)\) elements is removed from \(Q_n\), and exactly one successor is applied to the count set \(O_n\).
+
+Whenever such a full block is permitted, the previously defined natural-subtraction function records the same numerical step:
+
+\[
+\Delta(Q_n,C)
+=
+\Theta\left(\Nu^{\Theta(C)}(Q_n)\right)
+=
+\Theta(Q_{n+1}).
+\]
+
+If instead
+
+\[
+\Theta(Q_n)<\Theta(C),
+\]
+
+then no removal is performed and the process stops.
+
+This rule implements the intended repeated natural subtraction without creating a type inconsistency. The previously defined function \(\Delta(P_1,P_2)\) returns an output symbol, not a set, so it cannot itself be iterated as a set transformation. The actual repeated removal underlying \(\Delta\) is therefore written using \(\Nu^{\Theta(C)}\).
+
+Because each successful step removes at least one element from the finite set \(Q_n\), and because \(c\neq0\) implies \(\Theta(C)>0\), the process terminates after finitely many steps.
+
+Let \(m\) be the first stage at which
+
+\[
+\Theta(Q_m)<\Theta(C).
+\]
+
+Define the unsigned quotient magnitude
+
+\[
+\boxed{
+q_0:=\Theta(O_m)
+}
+\]
+
+and the unsigned leftover magnitude
+
+\[
+\boxed{
+r_0:=\Theta(Q_m).
+}
+\]
+
+By construction,
+
+\[
+0\leq r_0<\operatorname{abs}(c).
+\]
+
+For example, if
+
+\[
+b=17,
+\qquad
+c=5,
+\]
+
+then the successive magnitudes of \(Q_n\) are
+
+\[
+17,\ 12,\ 7,\ 2.
+\]
+
+Three complete blocks are removed, so
+
+\[
+q_0=3,
+\qquad
+r_0=2.
+\]
+
+\subsection*{3. Signed Euclidean Quotient and Remainder}
+
+The unsigned process above divides \(\operatorname{abs}(b)\) by \(\operatorname{abs}(c)\).
+
+We now assign signs so that the final quotient \(q\) and remainder \(r\) always satisfy
+
+\[
+\boxed{
+b=q\cdot c+r
+}
+\]
+
+and
+
+\[
+\boxed{
+0\leq r<\operatorname{abs}(c).
+}
+\]
+
+If \(b\) is nonnegative, define
+
+\[
+r=r_0,
+\]
+
+and define
+
+\[
+q=
+\begin{cases}
+q_0, & c>0,\\[4pt]
+-q_0, & c<0.
+\end{cases}
+\]
+
+If \(b\) is negative and \(r_0=0\), define
+
+\[
+r=0,
+\]
+
+and
+
+\[
+q=
+\begin{cases}
+-q_0, & c>0,\\[4pt]
+q_0, & c<0.
+\end{cases}
+\]
+
+Finally, if \(b\) is negative and \(r_0>0\), one additional divisor-sized block is required in the signed quotient so that the remainder remains nonnegative.
+
+Define
+
+\[
+\boxed{
+r=\operatorname{abs}(c)-r_0
+}
+\]
+
+and
+
+\[
+\boxed{
+q=
+\begin{cases}
+-(q_0+1), & c>0,\\[4pt]
+q_0+1, & c<0.
+\end{cases}
+}
+\]
+
+This adjustment is necessary because simply attaching a negative sign to \(q_0\) would produce a negative remainder when the dividend is negative and \(r_0\neq0\).
+
+\subsection*{4. Definition of \(\Xi\)}
+
+Define
+
+\[
+\boxed{
+\Xi
+\left[
+(P_a,P_b),(P_c,P_d)
+\right]
+=
+\Xi(b,c)
+=
+(q,r),
+}
+\]
+
+where \(b\) and \(c\) are the signed symbols represented by
+
+\[
+\Lambda[(P_a,P_b)]
+\]
+
+and
+
+\[
+\Lambda[(P_c,P_d)],
+\]
+
+and where \(q\) and \(r\) are constructed by the full-block removal and sign rules above.
+
+Thus \(\Xi\) returns two output symbols:
+
+\[
+\boxed{
+\text{quotient }q
+\qquad\text{and}\qquad
+\text{remainder }r.
+}
+\]
+
+The output always satisfies
+
+\[
+\boxed{
+b=q\cdot c+r,
+\qquad
+0\leq r<\operatorname{abs}(c).
+}
+\]
+
+\subsection*{5. Examples}
+
+For \(b=17\) and \(c=5\),
+
+\[
+\Xi(17,5)=(3,2),
+\]
+
+because
+
+\[
+17=3\cdot5+2.
+\]
+
+For \(b=-17\) and \(c=5\), the unsigned process still gives
+
+\[
+q_0=3,
+\qquad
+r_0=2.
+\]
+
+Since the dividend is negative and \(r_0>0\),
+
+\[
+q=-(3+1)=-4
+\]
+
+and
+
+\[
+r=5-2=3.
+\]
+
+Hence
+
+\[
+\Xi(-17,5)=(-4,3),
+\]
+
+and indeed
+
+\[
+-17=(-4)\cdot5+3.
+\]
+
+For \(b=17\) and \(c=-5\),
+
+\[
+\Xi(17,-5)=(-3,2),
+\]
+
+because
+
+\[
+17=(-3)\cdot(-5)+2.
+\]
+
+For \(b=-17\) and \(c=-5\),
+
+\[
+\Xi(-17,-5)=(4,3),
+\]
+
+because
+
+\[
+-17=4\cdot(-5)+3.
+\]
+
+\subsection*{6. Modulo}
+
+For modular arithmetic, the modulus is taken to be a positive natural-number symbol \(m\).
+
+If
+
+\[
+\Xi(b,m)=(q,r),
+\]
+
+then define
+
+\[
+\boxed{
+b\bmod m:=r.
+}
+\]
+
+Thus the modulo operation returns the nonnegative remainder produced by \(\Xi\), and it always satisfies
+
+\[
+\boxed{
+0\leq b\bmod m<m.
+}
+\]
+
+For example,
+
+\[
+17\bmod5=2
+\]
+
+and
+
+\[
+-17\bmod5=3.
+\]
+
+Two signed integers \(x\) and \(y\) are said to be congruent modulo \(m\) when they produce the same remainder under this operation.
+
+We write
+
+\[
+\boxed{
+x\equiv y\pmod m
+}
+\]
+
+precisely when
+
+\[
+x\bmod m=y\bmod m.
+\]
+
+For example,
+
+\[
+17\equiv2\pmod5
+\]
+
+and
+
+\[
+-17\equiv3\pmod5.
+\]
+
+\section*{Defining Quotient and Remainder Output Functions}
+
+Recall that for signed integers \(b\) and \(c\neq 0\),
+
+\[
+\Xi(b,c)=(q,r),
+\]
+
+where
+
+\[
+b=q\cdot c+r
+\]
+
+and
+
+\[
+0\leq r<\operatorname{abs}(c).
+\]
+
+We now define two functions that extract the two outputs of \(\Xi\).
+
+\subsection*{1. Quotient Output Function}
+
+If
+
+\[
+\Xi(b,c)=(q,r),
+\]
+
+define
+
+\[
+\boxed{
+\operatorname{quo}(\Xi(b,c)):=q.
+}
+\]
+
+Therefore,
+
+\[
+\operatorname{quo}
+\left(
+\Xi(b,c)
+\right)
+\]
+
+returns only the quotient produced by \(\Xi\).
+
+For signed-pair inputs,
+
+\[
+\boxed{
+\operatorname{quo}
+\left(
+\Xi[(P_a,P_b),(P_c,P_d)]
+\right)
+:=
+q
+}
+\]
+
+whenever
+
+\[
+\Xi[(P_a,P_b),(P_c,P_d)]
+=
+(q,r).
+\]
+
+\subsection*{2. Remainder Output Function}
+
+If
+
+\[
+\Xi(b,c)=(q,r),
+\]
+
+define
+
+\[
+\boxed{
+\operatorname{rem}(\Xi(b,c)):=r.
+}
+\]
+
+Therefore,
+
+\[
+\operatorname{rem}
+\left(
+\Xi(b,c)
+\right)
+\]
+
+returns only the remainder produced by \(\Xi\).
+
+For signed-pair inputs,
+
+\[
+\boxed{
+\operatorname{rem}
+\left(
+\Xi[(P_a,P_b),(P_c,P_d)]
+\right)
+:=
+r
+}
+\]
+
+whenever
+
+\[
+\Xi[(P_a,P_b),(P_c,P_d)]
+=
+(q,r).
+\]
+
+Because \(\Xi\) is defined so that
+
+\[
+0\leq r<\operatorname{abs}(c),
+\]
+
+the remainder function always satisfies
+
+\[
+\boxed{
+0
+\leq
+\operatorname{rem}(\Xi(b,c))
+<
+\operatorname{abs}(c).
+}
+\]
+
+When the divisor is a positive modulus \(v\),
+
+\[
+c=v>0,
+\]
+
+this becomes
+
+\[
+\boxed{
+0
+\leq
+\operatorname{rem}(\Xi(b,v))
+<
+v.
+}
+\]
+
+\section*{Defining Vectors over \(\mathbb Z_v\)}
+
+We now define finite vectors whose coordinates are signed integers reduced modulo a common positive modulus \(v\).
+
+Let
+
+\[
+u\in\mathbb N
+\]
+
+be the number of coordinates in the vector, and let
+
+\[
+v\in\mathbb N
+\]
+
+with
+
+\[
+v>0.
+\]
+
+A vector containing exactly \(u\) coordinates modulo \(v\) is written
+
+\[
+\boxed{
+\vec{x}\in\mathbb Z_v^u.
+}
+\]
+
+Here,
+
+\[
+u
+\]
+
+specifies the number of coordinates, while
+
+\[
+v
+\]
+
+specifies the modulus used for every coordinate.
+
+\subsection*{1. Construction of a Coordinate}
+
+Each coordinate is constructed from two signed-pair representations.
+
+Let
+
+\[
+(P_a,P_b)
+\]
+
+be any signed-pair representation.
+
+Its reduced signed value may be any integer:
+
+\[
+\Lambda[(P_a,P_b)]\equiv s.
+\]
+
+Let
+
+\[
+(P_c,P_d)
+\]
+
+be a signed-pair representation satisfying
+
+\[
+\boxed{
+\Lambda[(P_c,P_d)]\equiv v,
+}
+\]
+
+where
+
+\[
+v>0.
+\]
+
+Then
+
+\[
+\Xi[(P_a,P_b),(P_c,P_d)]
+\]
+
+produces a quotient and remainder.
+
+The coordinate stored in the vector is defined to be only the remainder:
+
+\[
+\boxed{
+x_1
+=
+\operatorname{rem}
+\left(
+\Xi[(P_a,P_b),(P_c,P_d)]
+\right).
+}
+\]
+
+Therefore
+
+\[
+0\leq x_1<v.
+\]
+
+The first signed pair may represent any signed integer, while the second signed pair represents the fixed positive modulus \(v\).
+
+\subsection*{2. Construction of the Vector}
+
+Let there be exactly \(u\) signed-pair inputs
+
+\[
+(P_{a_1},P_{b_1}),
+(P_{a_2},P_{b_2}),
+\ldots,
+(P_{a_u},P_{b_u}),
+\]
+
+and exactly \(u\) modulus-pair inputs
+
+\[
+(P_{c_1},P_{d_1}),
+(P_{c_2},P_{d_2}),
+\ldots,
+(P_{c_u},P_{d_u}),
+\]
+
+where every modulus pair represents the same positive signed value \(v\):
+
+\[
+\boxed{
+\Lambda[(P_{c_i},P_{d_i})]\equiv v
+}
+\]
+
+for every
+
+\[
+i=1,2,\ldots,u.
+\]
+
+Define each coordinate by
+
+\[
+\boxed{
+x_i
+=
+\operatorname{rem}
+\left(
+\Xi[
+(P_{a_i},P_{b_i}),
+(P_{c_i},P_{d_i})
+]
+\right).
+}
+\]
+
+Then define the vector
+
+\[
+\boxed{
+\vec{x}
+=
+(x_1,x_2,\ldots,x_u).
+}
+\]
+
+Substituting the definitions of the coordinates,
+
+\[
+\boxed{
+\vec{x}
+=
+\left(
+\operatorname{rem}
+\left(
+\Xi[
+(P_{a_1},P_{b_1}),
+(P_{c_1},P_{d_1})
+]
+\right),
+\operatorname{rem}
+\left(
+\Xi[
+(P_{a_2},P_{b_2}),
+(P_{c_2},P_{d_2})
+]
+\right),
+\ldots,
+\operatorname{rem}
+\left(
+\Xi[
+(P_{a_u},P_{b_u}),
+(P_{c_u},P_{d_u})
+]
+\right)
+\right).
+}
+\]
+
+Since every coordinate satisfies
+
+\[
+0\leq x_i<v,
+\]
+
+the resulting vector satisfies
+
+\[
+\boxed{
+\vec{x}\in\mathbb Z_v^u.
+}
+\]
+
+\subsection*{3. Expanded Three-Coordinate Example}
+
+For a vector with
+
+\[
+u=3,
+\]
+
+write
+
+\[
+\vec{x}\in\mathbb Z_v^3.
+\]
+
+Let
+
+\[
+(P_a,P_b),
+\qquad
+(P_e,P_f),
+\qquad
+(P_i,P_j)
+\]
+
+be three arbitrary signed-pair representations.
+
+Let
+
+\[
+(P_c,P_d),
+\qquad
+(P_g,P_h),
+\qquad
+(P_k,P_l)
+\]
+
+all represent the same positive modulus \(v\):
+
+\[
+\Lambda[(P_c,P_d)]\equiv v,
+\]
+
+\[
+\Lambda[(P_g,P_h)]\equiv v,
+\]
+
+and
+
+\[
+\Lambda[(P_k,P_l)]\equiv v.
+\]
+
+Then define
+
+\[
+\boxed{
+\vec{x}
+=
+\left(
+\operatorname{rem}
+\left(
+\Xi[(P_a,P_b),(P_c,P_d)]
+\right),
+\operatorname{rem}
+\left(
+\Xi[(P_e,P_f),(P_g,P_h)]
+\right),
+\operatorname{rem}
+\left(
+\Xi[(P_i,P_j),(P_k,P_l)]
+\right)
+\right).
+}
+\]
+
+Each first ordered pair may represent any signed integer.
+
+Each second ordered pair must represent the same positive modulus \(v\).
+
+Therefore each coordinate lies in
+
+\[
+\{0,1,2,\ldots,v-1\},
+\]
+
+and the complete vector contains exactly three coordinates.
+
+Hence
+
+\[
+\boxed{
+\vec{x}\in\mathbb Z_v^3.
+}
+\]
+
+\subsection*{4. General Form}
+
+More generally,
+
+\[
+\boxed{
+\vec{x}\in\mathbb Z_v^u
+}
+\]
+
+means that
+
+\[
+\vec{x}
+=
+(x_1,x_2,\ldots,x_u)
+\]
+
+contains exactly \(u\) coordinates and every coordinate satisfies
+
+\[
+\boxed{
+0\leq x_i<v.
+}
+\]
+
+Within the present system, each coordinate is obtained from
+
+\[
+\boxed{
+x_i
+=
+\operatorname{rem}
+\left(
+\Xi[
+(P_{a_i},P_{b_i}),
+(P_{c_i},P_{d_i})
+]
+\right),
+}
+\]
+
+with
+
+\[
+\boxed{
+\Lambda[(P_{c_i},P_{d_i})]\equiv v
+}
+\]
+
+for every coordinate.
+
+Thus the first signed-pair input may vary independently from coordinate to coordinate, while every second signed-pair input represents the same positive modulus \(v\).
+
 \end{document}
