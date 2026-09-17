@@ -4590,4 +4590,464 @@ for every coordinate.
 
 Thus the first signed-pair input may vary independently from coordinate to coordinate, while every second signed-pair input represents the same positive modulus \(v\).
 
+\section*{Matrix-Vector Multiplication with Signed-Pair Outputs}
+
+We now define a matrix, a vector, a canonical symbol-to-pair map, and the corresponding matrix-vector product.
+
+\subsection*{1. Matrix Definition}
+
+Let
+
+\[
+A
+=
+\begin{pmatrix}
+(P_{a_1},P_{b_1}) & (P_{c_1},P_{d_1})\\
+(P_{a_2},P_{b_2}) & (P_{c_2},P_{d_2})
+\end{pmatrix}.
+\]
+
+Each matrix entry is a signed-pair representation.
+
+Thus the four entries represent signed integers through reduction by \(\Lambda\):
+
+\[
+\Lambda[(P_{a_1},P_{b_1})],
+\qquad
+\Lambda[(P_{c_1},P_{d_1})],
+\]
+
+\[
+\Lambda[(P_{a_2},P_{b_2})],
+\qquad
+\Lambda[(P_{c_2},P_{d_2})].
+\]
+
+No requirement is made that the matrix entries already be reduced.
+
+\subsection*{2. Vector Definition}
+
+Let
+
+\[
+\vec{x}
+=
+\begin{pmatrix}
+x_1\\
+x_2
+\end{pmatrix}.
+\]
+
+The coordinates
+
+\[
+x_1
+\qquad\text{and}\qquad
+x_2
+\]
+
+are signed numerical symbols.
+
+Unlike the entries of \(A\), the coordinates of \(\vec{x}\) are not themselves ordered pairs of canonical sets.
+
+Therefore, before a vector coordinate can be used as an input to \(\Upsilon\), it must be converted into a signed-pair representation.
+
+\subsection*{3. Definition of \(\Lambda^{-1}\)}
+
+Define the canonical symbol-to-pair function
+
+\[
+\Lambda^{-1}
+\]
+
+on signed numerical symbols.
+
+For any signed symbol \(s\), define
+
+\[
+\boxed{
+\Lambda^{-1}(s)
+=
+\begin{cases}
+(P_{\operatorname{abs}(s)},P_0),
+&
+s>0,
+\\[6pt]
+(P_0,P_{\operatorname{abs}(s)}),
+&
+s<0,
+\\[6pt]
+(P_0,P_0),
+&
+s=0.
+\end{cases}
+}
+\]
+
+Equivalently, using the successor construction,
+
+\[
+\boxed{
+\Lambda^{-1}(s)
+=
+\begin{cases}
+\left(
+\Sigma^{\operatorname{abs}(s)}(P_0),
+P_0
+\right),
+&
+s>0,
+\\[8pt]
+\left(
+P_0,
+\Sigma^{\operatorname{abs}(s)}(P_0)
+\right),
+&
+s<0,
+\\[8pt]
+(P_0,P_0),
+&
+s=0.
+\end{cases}
+}
+\]
+
+Thus, for example,
+
+\[
+\Lambda^{-1}(3)=(P_3,P_0),
+\]
+
+\[
+\Lambda^{-1}(-3)=(P_0,P_3),
+\]
+
+and
+
+\[
+\Lambda^{-1}(0)=(P_0,P_0).
+\]
+
+\subsection*{4. Why \(\Lambda^{-1}\) Is Not a True Inverse}
+
+The notation
+
+\[
+\Lambda^{-1}
+\]
+
+is retained by definition, but it is not a true inverse function in the ordinary set-theoretic sense.
+
+The reason is that infinitely many different unreduced signed pairs may represent the same signed numerical symbol.
+
+For example,
+
+\[
+(P_3,P_0),
+\]
+
+\[
+(P_4,P_1),
+\]
+
+\[
+(P_5,P_2),
+\]
+
+and, more generally,
+
+\[
+(P_{3+v},P_v)
+\]
+
+for arbitrary
+
+\[
+v\in\mathbb N
+\]
+
+all reduce to the same signed value.
+
+Therefore, given only the symbol
+
+\[
+3,
+\]
+
+there is no unique original ordered pair that can be recovered.
+
+The function
+
+\[
+\Lambda^{-1}
+\]
+
+does not attempt to recover the original unreduced representation.
+
+Instead, it returns the unique canonical reduced pair corresponding to the signed symbol.
+
+Hence,
+
+\[
+\boxed{
+\Lambda^{-1}(3)=(P_3,P_0)
+}
+\]
+
+even if the value \(3\) originally arose from
+
+\[
+(P_8,P_5).
+\]
+
+The function therefore satisfies the canonical recovery property
+
+\[
+\boxed{
+\Lambda[\Lambda^{-1}(s)]\equiv s.
+}
+\]
+
+However, in general,
+
+\[
+\boxed{
+\Lambda^{-1}
+\left(
+\Lambda[(P_a,P_b)]
+\right)
+\neq
+(P_a,P_b)
+}
+\]
+
+whenever the original pair is unreduced.
+
+Instead,
+
+\[
+\Lambda^{-1}
+\left(
+\Lambda[(P_a,P_b)]
+\right)
+\]
+
+returns the canonical reduced pair representing the same signed value.
+
+\subsection*{5. Multiplication of a Matrix Entry by a Vector Coordinate}
+
+Since \(\Upsilon\) accepts signed-pair inputs, a vector coordinate must first be converted using \(\Lambda^{-1}\).
+
+For the matrix entry
+
+\[
+(P_{a_1},P_{b_1})
+\]
+
+and vector coordinate
+
+\[
+x_1,
+\]
+
+the product is
+
+\[
+\Upsilon
+\left[
+(P_{a_1},P_{b_1}),
+\Lambda^{-1}(x_1)
+\right].
+\]
+
+The output of \(\Upsilon\) is a signed numerical symbol.
+
+Since \(\Gamma\) requires signed-pair inputs, the output of \(\Upsilon\) must therefore be converted back into a signed pair using \(\Lambda^{-1}\).
+
+Thus define the corresponding signed-pair product by
+
+\[
+\boxed{
+\Lambda^{-1}
+\left(
+\Upsilon
+\left[
+(P_{a_1},P_{b_1}),
+\Lambda^{-1}(x_1)
+\right]
+\right).
+}
+\]
+
+Likewise,
+
+\[
+\boxed{
+\Lambda^{-1}
+\left(
+\Upsilon
+\left[
+(P_{c_1},P_{d_1}),
+\Lambda^{-1}(x_2)
+\right]
+\right).
+}
+\]
+
+\subsection*{6. Matrix-Vector Multiplication}
+
+The first coordinate of
+
+\[
+A\vec{x}
+\]
+
+is obtained by multiplying the entries of the first row by the corresponding vector coordinates and then combining those signed-pair products using \(\Gamma\).
+
+Therefore define
+
+\[
+\boxed{
+y_1
+=
+\Gamma
+\left(
+\Lambda^{-1}
+\left(
+\Upsilon
+\left[
+(P_{a_1},P_{b_1}),
+\Lambda^{-1}(x_1)
+\right]
+\right),
+\Lambda^{-1}
+\left(
+\Upsilon
+\left[
+(P_{c_1},P_{d_1}),
+\Lambda^{-1}(x_2)
+\right]
+\right)
+\right).
+}
+\]
+
+Similarly, the second coordinate is
+
+\[
+\boxed{
+y_2
+=
+\Gamma
+\left(
+\Lambda^{-1}
+\left(
+\Upsilon
+\left[
+(P_{a_2},P_{b_2}),
+\Lambda^{-1}(x_1)
+\right]
+\right),
+\Lambda^{-1}
+\left(
+\Upsilon
+\left[
+(P_{c_2},P_{d_2}),
+\Lambda^{-1}(x_2)
+\right]
+\right)
+\right).
+}
+\]
+
+Therefore,
+
+\[
+\boxed{
+A\vec{x}
+=
+\begin{pmatrix}
+y_1\\
+y_2
+\end{pmatrix}.
+}
+\]
+
+Substituting the definitions of \(y_1\) and \(y_2\),
+
+\[
+\boxed{
+A\vec{x}
+=
+\begin{pmatrix}
+\Gamma
+\left(
+\Lambda^{-1}
+\left(
+\Upsilon
+\left[
+(P_{a_1},P_{b_1}),
+\Lambda^{-1}(x_1)
+\right]
+\right),
+\Lambda^{-1}
+\left(
+\Upsilon
+\left[
+(P_{c_1},P_{d_1}),
+\Lambda^{-1}(x_2)
+\right]
+\right)
+\right)
+\\[18pt]
+\Gamma
+\left(
+\Lambda^{-1}
+\left(
+\Upsilon
+\left[
+(P_{a_2},P_{b_2}),
+\Lambda^{-1}(x_1)
+\right]
+\right),
+\Lambda^{-1}
+\left(
+\Upsilon
+\left[
+(P_{c_2},P_{d_2}),
+\Lambda^{-1}(x_2)
+\right]
+\right)
+\right)
+\end{pmatrix}.
+}
+\]
+
+Each coordinate of
+
+\[
+A\vec{x}
+\]
+
+is therefore a reduced signed-pair output produced by \(\Gamma\).
+
+At this stage, no modular reduction is applied.
+
+Thus the operation constructed here is ordinary signed matrix-vector multiplication in the signed-pair representation system.
+
+The type flow for each individual multiplication term is
+
+\[
+\boxed{
+\text{symbol}
+\overset{\Lambda^{-1}}{\longrightarrow}
+\text{signed pair}
+\overset{\Upsilon}{\longrightarrow}
+\text{signed symbol}
+\overset{\Lambda^{-1}}{\longrightarrow}
+\text{signed pair}.
+}
+\]
+
+The resulting signed-pair products can then be combined by \(\Gamma\).
 \end{document}
