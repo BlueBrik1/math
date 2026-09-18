@@ -4834,7 +4834,7 @@ Instead,
 
 returns the canonical reduced pair representing the same signed value.
 
-\subsection*{5. Multiplication of a Matrix Entry by a Vector Coordinate}
+\subsection*{5. Unreduced Matrix-Entry--Vector-Coordinate Multiplication}
 
 Since \(\Upsilon\) accepts signed-pair inputs, a vector coordinate must first be converted using \(\Lambda^{-1}\).
 
@@ -4862,9 +4862,9 @@ the product is
 
 The output of \(\Upsilon\) is a signed numerical symbol.
 
-Since \(\Gamma\) requires signed-pair inputs, the output of \(\Upsilon\) must therefore be converted back into a signed pair using \(\Lambda^{-1}\).
+Since \(\Gamma\) requires signed-pair inputs, whenever this product is to be used as an input to \(\Gamma\), the output of \(\Upsilon\) must be converted back into a signed pair using \(\Lambda^{-1}\).
 
-Thus define the corresponding signed-pair product by
+Thus the corresponding signed-pair product is
 
 \[
 \boxed{
@@ -4894,21 +4894,85 @@ Likewise,
 }
 \]
 
-\subsection*{6. Matrix-Vector Multiplication}
+\subsection*{6. Overbar Notation for Pre-Modular Results}
 
-The first coordinate of
+From this point onward, an overbar placed over a vector expression denotes that the indicated arithmetic operation has been performed, but coordinate-wise modular reduction by
 
 \[
-A\vec{x}
+\operatorname{rem}(\Xi(\cdot))
 \]
 
-is obtained by multiplying the entries of the first row by the corresponding vector coordinates and then combining those signed-pair products using \(\Gamma\).
+has not yet been applied.
 
-Therefore define
+Thus,
 
 \[
 \boxed{
-y_1
+\overline{\delta\vec{x}},
+\qquad
+\overline{\vec{x}+\vec{y}},
+\qquad
+\overline{A\vec{x}}
+}
+\]
+
+denote pre-modular results.
+
+The overbar does not specify whether the coordinates are signed numerical symbols or signed pairs. Their type is determined by the function producing them.
+
+In particular:
+
+\[
+\Upsilon
+\]
+
+produces signed numerical symbols, while
+
+\[
+\Gamma
+\]
+
+produces reduced signed pairs.
+
+The overbar indicates only that the final modular-remainder step has not yet been applied.
+
+\subsection*{7. Matrix-Vector Multiplication Before Modular Reduction}
+
+Let
+
+\[
+A
+=
+\begin{pmatrix}
+(P_{a_1},P_{b_1}) & (P_{c_1},P_{d_1})\\
+(P_{a_2},P_{b_2}) & (P_{c_2},P_{d_2})
+\end{pmatrix}
+\]
+
+and
+
+\[
+\vec{x}
+=
+\begin{pmatrix}
+x_1\\
+x_2
+\end{pmatrix}.
+\]
+
+The first coordinate of the pre-modular matrix-vector product
+
+\[
+\overline{A\vec{x}}
+\]
+
+is obtained by multiplying each entry of the first row by the corresponding vector coordinate and then combining the resulting signed-pair products using \(\Gamma\).
+
+Define
+
+\[
+\boxed{
+\overline{y}_1
 =
 \Gamma
 \left(
@@ -4932,11 +4996,11 @@ y_1
 }
 \]
 
-Similarly, the second coordinate is
+Similarly,
 
 \[
 \boxed{
-y_2
+\overline{y}_2
 =
 \Gamma
 \left(
@@ -4960,24 +5024,24 @@ y_2
 }
 \]
 
-Therefore,
+Therefore define
 
 \[
 \boxed{
-A\vec{x}
+\overline{A\vec{x}}
 =
 \begin{pmatrix}
-y_1\\
-y_2
+\overline{y}_1\\
+\overline{y}_2
 \end{pmatrix}.
 }
 \]
 
-Substituting the definitions of \(y_1\) and \(y_2\),
+Substituting the definitions directly,
 
 \[
 \boxed{
-A\vec{x}
+\overline{A\vec{x}}
 =
 \begin{pmatrix}
 \Gamma
@@ -5026,16 +5090,28 @@ A\vec{x}
 Each coordinate of
 
 \[
-A\vec{x}
+\overline{A\vec{x}}
 \]
 
 is therefore a reduced signed-pair output produced by \(\Gamma\).
 
-At this stage, no modular reduction is applied.
+At this stage,
 
-Thus the operation constructed here is ordinary signed matrix-vector multiplication in the signed-pair representation system.
+\[
+\operatorname{rem}(\Xi(\cdot))
+\]
 
-The type flow for each individual multiplication term is
+has not been applied.
+
+Thus
+
+\[
+\overline{A\vec{x}}
+\]
+
+denotes the ordinary signed matrix-vector product before reduction modulo a chosen modulus.
+
+The type flow of each individual multiplication term is
 
 \[
 \boxed{
@@ -5049,5 +5125,1098 @@ The type flow for each individual multiplication term is
 }
 \]
 
-The resulting signed-pair products can then be combined by \(\Gamma\).
+The resulting signed-pair products are then combined using \(\Gamma\).
+
+\section*{Vector Operations}
+
+Let
+
+\[
+\vec{x}
+=
+\begin{pmatrix}
+x_1\\
+x_2\\
+\vdots\\
+x_u
+\end{pmatrix}
+\]
+
+and
+
+\[
+\vec{y}
+=
+\begin{pmatrix}
+y_1\\
+y_2\\
+\vdots\\
+y_u
+\end{pmatrix}
+\]
+
+be vectors of equal dimension \(u\).
+
+When modular vector arithmetic is considered, assume
+
+\[
+\vec{x},\vec{y}\in\mathbb Z_v^u,
+\]
+
+where \(v>0\).
+
+Let the signed-pair representation of the common modulus \(v\) used for coordinate \(i\) be
+
+\[
+(P_{a_i},P_{b_i}),
+\]
+
+with
+
+\[
+\boxed{
+\Lambda[(P_{a_i},P_{b_i})]\equiv v.
+}
+\]
+
+\subsection*{1. Vector Addition Before Modular Reduction}
+
+Since each coordinate \(x_i\) and \(y_i\) is a numerical symbol, both must first be converted into signed-pair form before being supplied to \(\Gamma\).
+
+For each coordinate \(i\), define the pre-modular sum
+
+\[
+\boxed{
+\overline{z}_i
+=
+\Gamma
+\left(
+\Lambda^{-1}(x_i),
+\Lambda^{-1}(y_i)
+\right).
+}
+\]
+
+Therefore,
+
+\[
+\boxed{
+\overline{\vec{x}+\vec{y}}
+=
+\begin{pmatrix}
+\Gamma
+\left(
+\Lambda^{-1}(x_1),
+\Lambda^{-1}(y_1)
+\right)
+\\[8pt]
+\Gamma
+\left(
+\Lambda^{-1}(x_2),
+\Lambda^{-1}(y_2)
+\right)
+\\
+\vdots
+\\
+\Gamma
+\left(
+\Lambda^{-1}(x_u),
+\Lambda^{-1}(y_u)
+\right)
+\end{pmatrix}.
+}
+\]
+
+Each coordinate of
+
+\[
+\overline{\vec{x}+\vec{y}}
+\]
+
+is a reduced signed pair produced by \(\Gamma\).
+
+No modular reduction has yet been applied.
+
+\subsection*{2. Vector Addition Modulo \(v\)}
+
+To return each coordinate to \(\mathbb Z_v\), apply \(\Xi\) using the corresponding modulus pair and extract the remainder.
+
+Thus,
+
+\[
+\boxed{
+\vec{x}+\vec{y}
+=
+\begin{pmatrix}
+\operatorname{rem}
+\left(
+\Xi
+\left[
+\Gamma
+\left(
+\Lambda^{-1}(x_1),
+\Lambda^{-1}(y_1)
+\right),
+(P_{a_1},P_{b_1})
+\right]
+\right)
+\\[12pt]
+\operatorname{rem}
+\left(
+\Xi
+\left[
+\Gamma
+\left(
+\Lambda^{-1}(x_2),
+\Lambda^{-1}(y_2)
+\right),
+(P_{a_2},P_{b_2})
+\right]
+\right)
+\\
+\vdots
+\\
+\operatorname{rem}
+\left(
+\Xi
+\left[
+\Gamma
+\left(
+\Lambda^{-1}(x_u),
+\Lambda^{-1}(y_u)
+\right),
+(P_{a_u},P_{b_u})
+\right]
+\right)
+\end{pmatrix}.
+}
+\]
+
+Therefore,
+
+\[
+\boxed{
+\vec{x}+\vec{y}\in\mathbb Z_v^u.
+}
+\]
+
+The distinction is
+
+\[
+\boxed{
+\overline{\vec{x}+\vec{y}}
+=
+\text{coordinate-wise signed addition before modulo}
+}
+\]
+
+while
+
+\[
+\boxed{
+\vec{x}+\vec{y}
+=
+\text{coordinate-wise signed addition after modulo }v.
+}
+\]
+
+\subsection*{3. Scalar-Vector Multiplication Before Modular Reduction}
+
+Let
+
+\[
+\delta
+\]
+
+be a signed numerical symbol.
+
+Since \(\Upsilon\) requires signed-pair inputs, convert both the scalar and each vector coordinate using \(\Lambda^{-1}\).
+
+For each coordinate \(x_i\), define
+
+\[
+\boxed{
+\overline{w}_i
+=
+\Upsilon
+\left[
+\Lambda^{-1}(\delta),
+\Lambda^{-1}(x_i)
+\right].
+}
+\]
+
+Because \(\Upsilon\) returns a signed numerical symbol, each coordinate of the pre-modular scalar-vector product is a signed symbol.
+
+Therefore,
+
+\[
+\boxed{
+\overline{\delta\vec{x}}
+=
+\begin{pmatrix}
+\Upsilon
+\left[
+\Lambda^{-1}(\delta),
+\Lambda^{-1}(x_1)
+\right]
+\\[8pt]
+\Upsilon
+\left[
+\Lambda^{-1}(\delta),
+\Lambda^{-1}(x_2)
+\right]
+\\
+\vdots
+\\
+\Upsilon
+\left[
+\Lambda^{-1}(\delta),
+\Lambda^{-1}(x_u)
+\right]
+\end{pmatrix}.
+}
+\]
+
+At this stage no modular reduction has been applied.
+
+Thus,
+
+\[
+\boxed{
+\overline{\delta\vec{x}}
+=
+\text{scalar-vector multiplication before modulo }v.
+}
+\]
+
+\subsection*{4. Scalar-Vector Multiplication Modulo \(v\)}
+
+To apply \(\Xi\) in its signed-pair form, each signed-symbol output of \(\Upsilon\) must first be converted back into a signed pair using \(\Lambda^{-1}\).
+
+For each coordinate,
+
+\[
+\Lambda^{-1}
+\left(
+\Upsilon
+\left[
+\Lambda^{-1}(\delta),
+\Lambda^{-1}(x_i)
+\right]
+\right)
+\]
+
+is the canonical signed-pair representation of the pre-modular product.
+
+Therefore define
+
+\[
+\boxed{
+\delta\vec{x}
+=
+\begin{pmatrix}
+\operatorname{rem}
+\left(
+\Xi
+\left[
+\Lambda^{-1}
+\left(
+\Upsilon
+\left[
+\Lambda^{-1}(\delta),
+\Lambda^{-1}(x_1)
+\right]
+\right),
+(P_{a_1},P_{b_1})
+\right]
+\right)
+\\[14pt]
+\operatorname{rem}
+\left(
+\Xi
+\left[
+\Lambda^{-1}
+\left(
+\Upsilon
+\left[
+\Lambda^{-1}(\delta),
+\Lambda^{-1}(x_2)
+\right]
+\right),
+(P_{a_2},P_{b_2})
+\right]
+\right)
+\\
+\vdots
+\\
+\operatorname{rem}
+\left(
+\Xi
+\left[
+\Lambda^{-1}
+\left(
+\Upsilon
+\left[
+\Lambda^{-1}(\delta),
+\Lambda^{-1}(x_u)
+\right]
+\right),
+(P_{a_u},P_{b_u})
+\right]
+\right)
+\end{pmatrix}.
+}
+\]
+
+Hence,
+
+\[
+\boxed{
+\delta\vec{x}\in\mathbb Z_v^u.
+}
+\]
+
+The distinction is therefore
+
+\[
+\boxed{
+\overline{\delta\vec{x}}
+=
+\text{scalar multiplication before coordinate-wise modular reduction}
+}
+\]
+
+and
+
+\[
+\boxed{
+\delta\vec{x}
+=
+\text{scalar multiplication after coordinate-wise modular reduction}.
+}
+\]
+
+\subsection*{5. Type Summary}
+
+For vector addition,
+
+\[
+\boxed{
+x_i
+\overset{\Lambda^{-1}}{\longrightarrow}
+\text{signed pair},
+\qquad
+y_i
+\overset{\Lambda^{-1}}{\longrightarrow}
+\text{signed pair},
+}
+\]
+
+followed by
+
+\[
+\boxed{
+\Gamma:
+(\text{signed pair},\text{signed pair})
+\longrightarrow
+\text{signed pair}.
+}
+\]
+
+Thus each coordinate of
+
+\[
+\overline{\vec{x}+\vec{y}}
+\]
+
+is a signed pair.
+
+For scalar-vector multiplication,
+
+\[
+\boxed{
+\delta
+\overset{\Lambda^{-1}}{\longrightarrow}
+\text{signed pair},
+\qquad
+x_i
+\overset{\Lambda^{-1}}{\longrightarrow}
+\text{signed pair},
+}
+\]
+
+followed by
+
+\[
+\boxed{
+\Upsilon:
+(\text{signed pair},\text{signed pair})
+\longrightarrow
+\text{signed symbol}.
+}
+\]
+
+Thus each coordinate of
+
+\[
+\overline{\delta\vec{x}}
+\]
+
+is a signed numerical symbol.
+
+Before pair-form \(\Xi\) can be applied to such a coordinate, the coordinate is converted by
+
+\[
+\boxed{
+\Lambda^{-1}:
+\text{signed symbol}
+\longrightarrow
+\text{canonical signed pair}.
+}
+\]
+
+Finally,
+
+\[
+\boxed{
+\operatorname{rem}(\Xi(\cdot))
+}
+\]
+
+returns the numerical coordinate reduced modulo \(v\).
+\subsection*{Dot Product of Two Vectors}
+
+Let
+
+\[
+\vec{x}
+=
+(x_1,x_2,\ldots,x_u)
+\]
+
+and
+
+\[
+\vec{y}
+=
+(y_1,y_2,\ldots,y_u)
+\]
+
+be vectors of equal dimension \(u\).
+
+For each coordinate \(i\), first convert the numerical symbols
+
+\[
+x_i
+\qquad\text{and}\qquad
+y_i
+\]
+
+into canonical signed-pair representations using \(\Lambda^{-1}\).
+
+Then multiply the corresponding coordinates using \(\Upsilon\).
+
+Since \(\Upsilon\) returns a signed numerical symbol, convert that output back into a signed pair using \(\Lambda^{-1}\).
+
+Define
+
+\[
+\boxed{
+T_i
+=
+\Lambda^{-1}
+\left(
+\Upsilon
+\left[
+\Lambda^{-1}(x_i),
+\Lambda^{-1}(y_i)
+\right]
+\right).
+}
+\]
+
+Thus each \(T_i\) is the signed-pair representation of the product
+
+\[
+x_i y_i.
+\]
+
+For three coordinates,
+
+\[
+\vec{x}
+=
+(x_1,x_2,x_3)
+\]
+
+and
+
+\[
+\vec{y}
+=
+(y_1,y_2,y_3),
+\]
+
+the three coordinate products are
+
+\[
+T_1
+=
+\Lambda^{-1}
+\left(
+\Upsilon
+\left[
+\Lambda^{-1}(x_1),
+\Lambda^{-1}(y_1)
+\right]
+\right),
+\]
+
+\[
+T_2
+=
+\Lambda^{-1}
+\left(
+\Upsilon
+\left[
+\Lambda^{-1}(x_2),
+\Lambda^{-1}(y_2)
+\right]
+\right),
+\]
+
+and
+
+\[
+T_3
+=
+\Lambda^{-1}
+\left(
+\Upsilon
+\left[
+\Lambda^{-1}(x_3),
+\Lambda^{-1}(y_3)
+\right]
+\right).
+\]
+
+Since \(\Gamma\) accepts two signed-pair inputs and returns one signed-pair output, the products may be added recursively.
+
+First,
+
+\[
+\Gamma(T_1,T_2)
+\]
+
+produces the signed-pair representation of
+
+\[
+x_1y_1+x_2y_2.
+\]
+
+That output may then be supplied directly as an input to another application of \(\Gamma\).
+
+Therefore,
+
+\[
+\boxed{
+\overline{\vec{x}\cdot\vec{y}}
+=
+\Gamma
+\left(
+\Gamma(T_1,T_2),
+T_3
+\right).
+}
+\]
+
+Substituting the definitions of \(T_1,T_2,T_3\),
+
+\[
+\boxed{
+\begin{aligned}
+\overline{\vec{x}\cdot\vec{y}}
+=
+\Gamma
+\Bigg(
+&
+\Gamma
+\Bigg(
+\Lambda^{-1}
+\left(
+\Upsilon
+\left[
+\Lambda^{-1}(x_1),
+\Lambda^{-1}(y_1)
+\right]
+\right),
+\\
+&
+\Lambda^{-1}
+\left(
+\Upsilon
+\left[
+\Lambda^{-1}(x_2),
+\Lambda^{-1}(y_2)
+\right]
+\right)
+\Bigg),
+\\
+&
+\Lambda^{-1}
+\left(
+\Upsilon
+\left[
+\Lambda^{-1}(x_3),
+\Lambda^{-1}(y_3)
+\right]
+\right)
+\Bigg).
+\end{aligned}
+}
+\]
+
+The overbar indicates that the dot product has been computed, but modular reduction has not yet been applied.
+
+More generally, for vectors of dimension \(u\),
+
+\[
+\vec{x}
+=
+(x_1,x_2,\ldots,x_u)
+\]
+
+and
+
+\[
+\vec{y}
+=
+(y_1,y_2,\ldots,y_u),
+\]
+
+define
+
+\[
+T_i
+=
+\Lambda^{-1}
+\left(
+\Upsilon
+\left[
+\Lambda^{-1}(x_i),
+\Lambda^{-1}(y_i)
+\right]
+\right)
+\]
+
+for
+
+\[
+i=1,2,\ldots,u.
+\]
+
+Then define the pre-modular dot product by repeated application of \(\Gamma\):
+
+\[
+\boxed{
+\overline{\vec{x}\cdot\vec{y}}
+=
+\Gamma
+\left(
+\cdots
+\Gamma
+\left(
+\Gamma(T_1,T_2),
+T_3
+\right)
+\cdots,
+T_u
+\right).
+}
+\]
+
+Equivalently, define the partial sums recursively by
+
+\[
+D_1=T_1,
+\]
+
+and for
+
+\[
+i=2,3,\ldots,u,
+\]
+
+define
+
+\[
+\boxed{
+D_i
+=
+\Gamma(D_{i-1},T_i).
+}
+\]
+
+Then
+
+\[
+\boxed{
+\overline{\vec{x}\cdot\vec{y}}
+=
+D_u.
+}
+\]
+
+Thus
+
+\[
+\overline{\vec{x}\cdot\vec{y}}
+\]
+
+is a reduced signed-pair representation of
+
+\[
+x_1y_1+x_2y_2+\cdots+x_uy_u
+\]
+
+before modular reduction.
+
+If
+
+\[
+\vec{x},\vec{y}\in\mathbb Z_v^u,
+\]
+
+and
+
+\[
+(P_a,P_b)
+\]
+
+is a signed-pair representation of the positive modulus \(v\), so that
+
+\[
+\Lambda[(P_a,P_b)]\equiv v,
+\]
+
+then the modular dot product is defined by
+
+\[
+\boxed{
+\vec{x}\cdot\vec{y}
+=
+\operatorname{rem}
+\left(
+\Xi
+\left[
+\overline{\vec{x}\cdot\vec{y}},
+(P_a,P_b)
+\right]
+\right).
+}
+\]
+
+Therefore,
+
+\[
+\boxed{
+\overline{\vec{x}\cdot\vec{y}}
+=
+\text{dot product before modular reduction}
+}
+\]
+
+while
+
+\[
+\boxed{
+\vec{x}\cdot\vec{y}
+=
+\text{dot product after reduction modulo }v.
+}
+\]
+\subsection*{Matrix Addition}
+
+Let
+
+\[
+A=
+\begin{pmatrix}
+A_{11} & A_{12} & \cdots & A_{1n}\\
+A_{21} & A_{22} & \cdots & A_{2n}\\
+\vdots & \vdots & \ddots & \vdots\\
+A_{m1} & A_{m2} & \cdots & A_{mn}
+\end{pmatrix}
+\]
+
+and
+
+\[
+B=
+\begin{pmatrix}
+B_{11} & B_{12} & \cdots & B_{1n}\\
+B_{21} & B_{22} & \cdots & B_{2n}\\
+\vdots & \vdots & \ddots & \vdots\\
+B_{m1} & B_{m2} & \cdots & B_{mn}
+\end{pmatrix}
+\]
+
+be two matrices of equal dimensions \(m\times n\).
+
+Each entry is a signed-pair representation.
+
+Thus, for every row \(i\) and column \(j\),
+
+\[
+A_{ij}=(P_{a_{ij}},P_{b_{ij}})
+\]
+
+and
+
+\[
+B_{ij}=(P_{c_{ij}},P_{d_{ij}}).
+\]
+
+Matrix addition is performed coordinate-wise.
+
+Since \(\Gamma\) accepts two signed-pair inputs and returns one reduced signed-pair output, the pre-modular sum of the entries in position \((i,j)\) is
+
+\[
+\boxed{
+\overline{C}_{ij}
+=
+\Gamma
+\left(
+A_{ij},
+B_{ij}
+\right).
+}
+\]
+
+Equivalently,
+
+\[
+\boxed{
+\overline{C}_{ij}
+=
+\Gamma
+\left(
+(P_{a_{ij}},P_{b_{ij}}),
+(P_{c_{ij}},P_{d_{ij}})
+\right).
+}
+\]
+
+Therefore the pre-modular matrix sum is
+
+\[
+\boxed{
+\overline{A+B}
+=
+\begin{pmatrix}
+\Gamma(A_{11},B_{11}) &
+\Gamma(A_{12},B_{12}) &
+\cdots &
+\Gamma(A_{1n},B_{1n})
+\\[6pt]
+\Gamma(A_{21},B_{21}) &
+\Gamma(A_{22},B_{22}) &
+\cdots &
+\Gamma(A_{2n},B_{2n})
+\\
+\vdots & \vdots & \ddots & \vdots
+\\
+\Gamma(A_{m1},B_{m1}) &
+\Gamma(A_{m2},B_{m2}) &
+\cdots &
+\Gamma(A_{mn},B_{mn})
+\end{pmatrix}.
+}
+\]
+
+Every entry of
+
+\[
+\overline{A+B}
+\]
+
+is therefore a reduced signed-pair output produced by \(\Gamma\).
+
+At this stage, no modular reduction has been applied.
+
+Thus,
+
+\[
+\boxed{
+\overline{A+B}
+=
+\text{matrix addition before modular reduction}.
+}
+\]
+
+If
+
+\[
+A,B\in\mathbb Z_v^{m\times n},
+\]
+
+then each matrix entry must be reduced modulo the same positive modulus \(v\).
+
+Let
+
+\[
+(P_{p_{ij}},P_{q_{ij}})
+\]
+
+be a signed-pair representation of \(v\) for entry \((i,j)\), so that
+
+\[
+\boxed{
+\Lambda[(P_{p_{ij}},P_{q_{ij}})]\equiv v.
+}
+\]
+
+Since
+
+\[
+\Gamma(A_{ij},B_{ij})
+\]
+
+already returns a signed pair, it may be supplied directly to pair-form \(\Xi\).
+
+Therefore define the modular matrix-sum entry by
+
+\[
+\boxed{
+C_{ij}
+=
+\operatorname{rem}
+\left(
+\Xi
+\left[
+\Gamma(A_{ij},B_{ij}),
+(P_{p_{ij}},P_{q_{ij}})
+\right]
+\right).
+}
+\]
+
+Thus the modular matrix sum is
+
+\[
+\boxed{
+A+B
+=
+\begin{pmatrix}
+\operatorname{rem}
+\left(
+\Xi
+\left[
+\Gamma(A_{11},B_{11}),
+(P_{p_{11}},P_{q_{11}})
+\right]
+\right)
+&
+\cdots
+&
+\operatorname{rem}
+\left(
+\Xi
+\left[
+\Gamma(A_{1n},B_{1n}),
+(P_{p_{1n}},P_{q_{1n}})
+\right]
+\right)
+\\[12pt]
+\vdots
+&
+\ddots
+&
+\vdots
+\\[12pt]
+\operatorname{rem}
+\left(
+\Xi
+\left[
+\Gamma(A_{m1},B_{m1}),
+(P_{p_{m1}},P_{q_{m1}})
+\right]
+\right)
+&
+\cdots
+&
+\operatorname{rem}
+\left(
+\Xi
+\left[
+\Gamma(A_{mn},B_{mn}),
+(P_{p_{mn}},P_{q_{mn}})
+\right]
+\right)
+\end{pmatrix}.
+}
+\]
+
+Each entry of
+
+\[
+A+B
+\]
+
+is now a numerical symbol in
+
+\[
+\{0,1,\ldots,v-1\}.
+\]
+
+Therefore,
+
+\[
+\boxed{
+A+B\in\mathbb Z_v^{m\times n}.
+}
+\]
+
+The distinction is
+
+\[
+\boxed{
+\overline{A+B}
+=
+\text{coordinate-wise signed-pair matrix addition before modulo }v
+}
+\]
+
+while
+
+\[
+\boxed{
+A+B
+=
+\text{coordinate-wise matrix addition after modulo }v.
+}
+\]
+
+The type flow for each matrix entry is
+
+\[
+\boxed{
+(\text{signed pair},\text{signed pair})
+\overset{\Gamma}{\longrightarrow}
+\text{reduced signed pair}
+}
+\]
+
+followed, when modular reduction is required, by
+
+\[
+\boxed{
+\text{reduced signed pair}
+\overset{\Xi}{\longrightarrow}
+(q,r)
+\overset{\operatorname{rem}}{\longrightarrow}
+r.
+}
+\]
 \end{document}
